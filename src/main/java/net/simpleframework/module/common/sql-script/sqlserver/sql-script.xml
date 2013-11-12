@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql-script>
+	<version>1.0.0</version>
+	<name>script</name>
+	<description></description>
+	<tran-sql>
+    <![CDATA[
+      create table sf_attachment (
+        id char(32) not null,
+        contentid char(32) not null,
+        md5 char(32) not null,
+       	topic varchar(128) not null,
+       	attachtype varchar(16),
+       	attachsize bigint not null,
+       	downloads int not null,
+        createdate datetime not null,
+        userid char(32) not null,
+       	description varchar(256),
+        primary key(id)
+      );
+    ]]>
+	</tran-sql>
+	<tran-sql>
+    <![CDATA[
+      create table sf_attachment_lob (
+        md char(32) not null,
+        attachment image not null,
+        primary key(md)
+      );
+    ]]>
+	</tran-sql>
+</sql-script>
