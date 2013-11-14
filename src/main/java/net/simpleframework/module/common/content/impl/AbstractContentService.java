@@ -61,7 +61,7 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 
 	@Override
 	public IDataQuery<T> queryMyBeans(final Object user) {
-		return query(
+		return queryBeans(
 				null,
 				null,
 				null,
