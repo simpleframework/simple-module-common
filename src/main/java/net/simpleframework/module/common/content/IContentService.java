@@ -3,7 +3,7 @@ package net.simpleframework.module.common.content;
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
-import net.simpleframework.ctx.common.bean.TimePeriod;
+import net.simpleframework.common.TimePeriod;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
 
 /**

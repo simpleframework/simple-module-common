@@ -5,7 +5,7 @@ import net.simpleframework.ado.EFilterRelation;
 import net.simpleframework.ado.FilterItem;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
-import net.simpleframework.ctx.common.bean.TimePeriod;
+import net.simpleframework.common.TimePeriod;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
