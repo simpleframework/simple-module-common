@@ -30,6 +30,13 @@ public enum EContentStatus {
 		}
 	},
 
+	closed {
+		@Override
+		public String toString() {
+			return $m("EContentStatus.closed");
+		}
+	},
+
 	lock {
 		@Override
 		public String toString() {
@@ -48,13 +55,6 @@ public enum EContentStatus {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.delete");
-		}
-	},
-
-	closed {
-		@Override
-		public String toString() {
-			return $m("EContentStatus.closed");
 		}
 	},
 
