@@ -33,7 +33,7 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 	private ID userId;
 
 	/* 排序字段 */
-	private long oorder;
+	private int oorder;
 
 	@Override
 	public String getName() {
@@ -83,12 +83,12 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 	}
 
 	@Override
-	public long getOorder() {
+	public int getOorder() {
 		return oorder;
 	}
 
 	@Override
-	public void setOorder(final long oorder) {
+	public void setOorder(final int oorder) {
 		this.oorder = oorder;
 	}
 }

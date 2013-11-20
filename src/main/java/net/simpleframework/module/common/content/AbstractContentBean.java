@@ -48,7 +48,7 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	private int recommendationDuration;
 
 	/* 排序字段 */
-	private long oorder;
+	private int oorder;
 
 	/* 统计信息-查看次数 */
 	private long views;
@@ -121,12 +121,12 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	}
 
 	@Override
-	public long getOorder() {
+	public int getOorder() {
 		return oorder;
 	}
 
 	@Override
-	public void setOorder(final long oorder) {
+	public void setOorder(final int oorder) {
 		this.oorder = oorder;
 	}
 
