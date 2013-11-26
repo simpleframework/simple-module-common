@@ -2,10 +2,12 @@ package net.simpleframework.module.common.content.impl;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.EFilterRelation;
+import net.simpleframework.ado.EOrder;
 import net.simpleframework.ado.FilterItem;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.TimePeriod;
+import net.simpleframework.common.coll.ArrayUtils;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
@@ -51,11 +53,16 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 		return queryBeans(category, (TimePeriod) null, getDefaultOrderColumns());
 	}
 
+	private final ColumnData[] RECOMMENDATION_ORDER_COLUMNS = ArrayUtils.add(
+			new ColumnData[] { new ColumnData("recommendation").setOrder(EOrder.desc) },
+			ColumnData.class, getDefaultOrderColumns());
+
 	@Override
 	public IDataQuery<T> queryRecommendationBeans(final AbstractCategoryBean category,
 			final TimePeriod timePeriod) {
 		return queryBeans(category, EContentStatus.publish, timePeriod,
-				FilterItems.of(new FilterItem("recommendation", EFilterRelation.gt, 0)));
+				FilterItems.of(new FilterItem("recommendation", EFilterRelation.gt, 0)),
+				RECOMMENDATION_ORDER_COLUMNS);
 	}
 
 	@Override
