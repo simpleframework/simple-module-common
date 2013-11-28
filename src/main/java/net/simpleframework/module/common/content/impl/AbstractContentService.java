@@ -1,15 +1,23 @@
 package net.simpleframework.module.common.content.impl;
 
+import static net.simpleframework.common.I18n.$m;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.EFilterRelation;
 import net.simpleframework.ado.EOrder;
 import net.simpleframework.ado.FilterItem;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
+import net.simpleframework.common.Convert;
 import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.ArrayUtils;
+import net.simpleframework.ctx.permission.LoginUser;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
+import net.simpleframework.module.common.DescriptionLocalUtils;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
 import net.simpleframework.module.common.content.AbstractContentBean;
 import net.simpleframework.module.common.content.EContentStatus;
@@ -73,5 +81,28 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 				null,
 				FilterItems.of().addEqualItem("userId",
 						(user instanceof PermissionUser) ? ((PermissionUser) user).getId() : user));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void doUnRecommendationTask() {
+		final IDataQuery<T> dq = queryRecommendationBeans(null, null);
+		T t;
+		LoginUser.setAdmin();
+		while ((t = dq.next()) != null) {
+			final Date rDate = t.getRecommendationDate();
+			final int dur = t.getRecommendationDuration();
+			if (rDate != null && dur > 0) {
+				final Calendar cal = Calendar.getInstance();
+				cal.setTime(rDate);
+				cal.add(Calendar.SECOND, dur);
+				if (cal.getTime().before(new Date())) {
+					t.setRecommendation(0);
+					DescriptionLocalUtils.set(t,
+							$m("AbstractContentService.0", Convert.toDateString(rDate), dur));
+					update(new String[] { "recommendation" }, t);
+				}
+			}
+		}
 	}
 }

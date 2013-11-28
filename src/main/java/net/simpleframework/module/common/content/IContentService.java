@@ -64,4 +64,6 @@ public interface IContentService<T extends AbstractContentBean> extends IDbBeanS
 	 * @return
 	 */
 	IDataQuery<T> queryMyBeans(Object user);
+
+	void doUnRecommendationTask();
 }
