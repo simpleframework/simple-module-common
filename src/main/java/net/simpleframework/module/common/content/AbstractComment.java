@@ -1,9 +1,10 @@
 package net.simpleframework.module.common.content;
 
+import net.simpleframework.ado.ColumnMeta;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.common.ID;
-import net.simpleframework.common.StringUtils;
 import net.simpleframework.common.web.html.HtmlUtils;
+import net.simpleframework.lib.org.jsoup.nodes.Document;
 
 /**
  * Licensed under the Apache License, Version 2.0
@@ -34,10 +35,20 @@ public abstract class AbstractComment extends AbstractUserAwareBean {
 
 	public void setContent(final String content) {
 		this.content = content;
+		removeAttr("_doc");
+	}
+
+	@ColumnMeta(ignore = true)
+	public Document doc() {
+		Document doc = (Document) getAttr("_doc");
+		if (doc == null) {
+			setAttr("_doc", doc = HtmlUtils.createHtmlDocument(getContent()));
+		}
+		return doc;
 	}
 
 	@Override
 	public String toString() {
-		return StringUtils.substring(HtmlUtils.htmlToText(getContent()), 100);
+		return getContent();
 	}
 }
