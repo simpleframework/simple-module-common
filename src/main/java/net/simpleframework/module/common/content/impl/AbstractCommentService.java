@@ -33,6 +33,11 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 	}
 
 	@Override
+	public IDataQuery<T> queryAll() {
+		return query("1=1 order by createDate desc");
+	}
+
+	@Override
 	public void onInit() throws Exception {
 		addListener(new DbEntityAdapterEx() {
 			@SuppressWarnings("unchecked")
