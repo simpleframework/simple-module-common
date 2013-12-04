@@ -85,6 +85,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			}
 			attachment.setCreateDate(new Date());
 			attachment.setUserId(userId);
+			attachment.setDescription(af.getDescription());
 
 			if (exts != null) {
 				for (final Map.Entry<String, Object> p : exts.entrySet()) {
