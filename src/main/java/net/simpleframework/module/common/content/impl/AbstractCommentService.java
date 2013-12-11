@@ -1,5 +1,6 @@
 package net.simpleframework.module.common.content.impl;
 
+import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
@@ -25,11 +26,11 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 	}
 
 	@Override
-	public IDataQuery<T> queryChildren(final T parent) {
+	public IDataQuery<T> queryChildren(final T parent, final ColumnData... orderColumns) {
 		if (parent == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return query("parentid=? order by createDate desc", parent.getId());
+		return super.queryChildren(parent, ColumnData.DESC("createDate"));
 	}
 
 	@Override

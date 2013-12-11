@@ -7,7 +7,6 @@ import java.util.Date;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.EFilterRelation;
-import net.simpleframework.ado.EOrder;
 import net.simpleframework.ado.FilterItem;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
@@ -35,8 +34,9 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 	protected abstract ColumnData[] getDefaultOrderColumns();
 
 	@Override
-	public IDataQuery<T> queryByParams(final FilterItems params) {
-		return queryByParams(params, getDefaultOrderColumns());
+	public IDataQuery<T> queryByParams(final FilterItems params, final ColumnData... orderColumns) {
+		return super.queryByParams(params,
+				ArrayUtils.isEmpty(orderColumns) ? getDefaultOrderColumns() : orderColumns);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 	}
 
 	private final ColumnData[] RECOMMENDATION_ORDER_COLUMNS = ArrayUtils.add(
-			new ColumnData[] { new ColumnData("recommendation").setOrder(EOrder.desc) },
-			ColumnData.class, getDefaultOrderColumns());
+			new ColumnData[] { ColumnData.DESC("recommendation") }, ColumnData.class,
+			getDefaultOrderColumns());
 
 	@Override
 	public IDataQuery<T> queryRecommendationBeans(final AbstractCategoryBean category,
