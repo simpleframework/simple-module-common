@@ -79,7 +79,7 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 				null,
 				null,
 				null,
-				FilterItems.of().addEqualItem("userId",
+				FilterItems.of().addEqual("userId",
 						(user instanceof PermissionUser) ? ((PermissionUser) user).getId() : user));
 	}
 
