@@ -10,20 +10,20 @@ import net.simpleframework.common.Convert;
  */
 public class CategoryStat {
 
-	private Object categoryId;
+	private String categoryId;
 
 	private int count;
 
-	public CategoryStat(final Object categoryId, final Object count) {
+	public CategoryStat(final String categoryId, final Object count) {
 		setCategoryId(categoryId);
 		setCount(Convert.toInt(count));
 	}
 
-	public Object getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
 	}
 
-	public CategoryStat setCategoryId(final Object categoryId) {
+	public CategoryStat setCategoryId(final String categoryId) {
 		this.categoryId = categoryId;
 		return this;
 	}
