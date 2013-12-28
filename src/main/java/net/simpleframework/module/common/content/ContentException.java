@@ -19,7 +19,7 @@ public class ContentException extends ModuleException {
 	}
 
 	public static ContentException of(final Throwable throwable) {
-		return (ContentException) _of(ContentException.class, null, throwable);
+		return _of(ContentException.class, null, throwable);
 	}
 
 	private static final long serialVersionUID = -3871370008470558392L;
