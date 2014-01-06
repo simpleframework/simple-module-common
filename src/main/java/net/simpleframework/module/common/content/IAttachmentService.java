@@ -32,7 +32,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 */
 	AttachmentLob getLob(T attachment);
 
-	void insert(ID contentId, ID userId, Map<String, AttachmentFile> attachments);
+	void insert(ID contentId, ID userId, Map<String, AttachmentFile> attachments) throws IOException;
 
 	/**
 	 * 插入附件
@@ -44,7 +44,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 *           扩展属性
 	 */
 	void insert(ID contentId, ID userId, Map<String, AttachmentFile> attachments,
-			Map<String, Object> exts);
+			Map<String, Object> exts) throws IOException;
 
 	/**
 	 * 创建附件对象

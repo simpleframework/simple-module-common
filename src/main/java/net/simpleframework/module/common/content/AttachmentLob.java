@@ -54,7 +54,7 @@ public class AttachmentLob implements Serializable {
 	}
 
 	public static final DbEntityTable TBL = new DbEntityTable(AttachmentLob.class,
-			"sf_attachment_lob").setNoCache(true);
+			"sf_attachment_lob").setUniqueColumns("md").setNoCache(true);
 
 	private static final long serialVersionUID = 1757957179977035488L;
 }

@@ -2,7 +2,6 @@ package net.simpleframework.module.common.content.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -22,7 +21,6 @@ import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.AttachmentLob;
-import net.simpleframework.module.common.content.ContentException;
 import net.simpleframework.module.common.content.IAttachmentService;
 
 /**
@@ -41,14 +39,17 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		return query("contentId=?", content);
 	}
 
+	protected IDbEntityManager<AttachmentLob> getLobEntityManager() {
+		return getEntityManager(AttachmentLob.class);
+	}
+
 	protected AttachmentLob createLob() {
 		return new AttachmentLob();
 	}
 
 	@Override
 	public AttachmentLob getLob(final T attachment) {
-		return getEntityManager(AttachmentLob.class).queryForBean(
-				new ExpressionValue("md=?", attachment.getMd5()));
+		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
 	protected T createAttachmentFile(final AttachmentFile aFile) {
@@ -58,18 +59,19 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 	@Override
 	public void insert(final ID contentId, final ID userId,
-			final Map<String, AttachmentFile> attachments) {
+			final Map<String, AttachmentFile> attachments) throws IOException {
 		insert(contentId, userId, attachments, null);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void insert(final ID contentId, final ID userId,
-			final Map<String, AttachmentFile> attachments, final Map<String, Object> exts) {
+			final Map<String, AttachmentFile> attachments, final Map<String, Object> exts)
+			throws IOException {
 		if (attachments == null || attachments.size() == 0) {
 			return;
 		}
-		final IDbEntityManager<AttachmentLob> lobService = getEntityManager(AttachmentLob.class);
+		final IDbEntityManager<AttachmentLob> lobManager = getLobEntityManager();
 		for (final Map.Entry<String, AttachmentFile> entry : attachments.entrySet()) {
 			final AttachmentFile af = entry.getValue();
 			final String md5 = af.getMd5();
@@ -96,15 +98,15 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			getEntityManager().insert(attachment);
 
 			// lob
-			if (lobService.count(new ExpressionValue("md=?", md5)) == 0) {
-				final AttachmentLob lob = createLob();
+			AttachmentLob lob;
+			if ((lob = lobManager.queryForBean(new ExpressionValue("md=?", md5))) == null) {
+				lob = createLob();
 				lob.setMd(md5);
-				try {
-					lob.setAttachment(new FileInputStream(af.getAttachment()));
-				} catch (final FileNotFoundException e) {
-					throw ContentException.of(e);
-				}
-				lobService.insert(lob);
+				lob.setAttachment(new FileInputStream(af.getAttachment()));
+				lobManager.insert(lob);
+			} else {
+				lob.setRefs(lob.getRefs() + 1);
+				lobManager.update(new String[] { "refs" }, lob);
 			}
 		}
 	}
@@ -175,11 +177,20 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			@Override
 			public void onAfterDelete(final IDbEntityManager<?> manager, final IParamsValue paramsValue) {
 				super.onAfterDelete(manager, paramsValue);
-				final IDbEntityManager<? extends AttachmentLob> lobService = getEntityManager(AttachmentLob.class);
+				final IDbEntityManager<AttachmentLob> lobManager = getLobEntityManager();
 				for (final Attachment attachment : coll(paramsValue)) {
 					final String md5 = attachment.getMd5();
-					if (count("md5=?", md5) == 0) {
-						lobService.delete(new ExpressionValue("md=?", md5));
+					final AttachmentLob lob = lobManager.queryForBean(new ExpressionValue("md=?", md5));
+					if (lob != null) {
+						final int refs = lob.getRefs();
+						if (refs == 0 && count("md5=?", md5) == 0) {
+							lobManager.delete(new ExpressionValue("md=?", md5));
+						} else {
+							if (refs > 0) {
+								lob.setRefs(refs - 1);
+								lobManager.update(new String[] { "refs" }, lob);
+							}
+						}
 					}
 				}
 			}
