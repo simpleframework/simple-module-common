@@ -24,6 +24,7 @@
     <![CDATA[
       create table sf_attachment_lob (
         md char(32) not null,
+        refs int4 not null,
         attachment bytea not null,
         primary key(md)
       );

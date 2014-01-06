@@ -18,6 +18,9 @@ public class AttachmentLob implements Serializable {
 	/* 摘要值，唯一键值 */
 	private String md;
 
+	/* 引用次数 */
+	private int refs;
+
 	/* 附件 */
 	private InputStream attachment;
 
@@ -27,6 +30,14 @@ public class AttachmentLob implements Serializable {
 
 	public void setMd(final String md) {
 		this.md = md;
+	}
+
+	public int getRefs() {
+		return refs;
+	}
+
+	public void setRefs(final int refs) {
+		this.refs = refs;
 	}
 
 	public InputStream getAttachment() {
