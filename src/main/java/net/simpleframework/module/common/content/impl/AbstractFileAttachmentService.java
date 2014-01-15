@@ -18,7 +18,7 @@ import net.simpleframework.module.common.content.AttachmentLob;
 public abstract class AbstractFileAttachmentService<T extends Attachment> extends
 		AbstractAttachmentService<T> {
 
-	private String homedir = "d:/attachments";
+	private String homedir = "c:/attachments";
 
 	public String getHomedir() {
 		return homedir;
