@@ -1,5 +1,7 @@
 package net.simpleframework.module.common.content.impl;
 
+import static net.simpleframework.common.I18n.$m;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,11 +47,6 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 	protected AttachmentLob createLob() {
 		return new AttachmentLob();
-	}
-
-	@Override
-	public AttachmentLob getLob(final T attachment) throws IOException {
-		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
 	protected T createAttachmentFile(final AttachmentFile aFile) {
@@ -111,9 +108,18 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		}
 	}
 
+	@Override
+	public AttachmentLob getLob(final T attachment) throws IOException {
+		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", attachment.getMd5()));
+	}
+
 	protected void setAttachment(final AttachmentLob lob, final AttachmentFile af)
 			throws IOException {
 		lob.setAttachment(new FileInputStream(af.getAttachment()));
+	}
+
+	protected void deleteAttachment(final String md) {
+		getLobEntityManager().delete(new ExpressionValue("md=?", md));
 	}
 
 	private String tmpdir;
@@ -148,7 +154,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 					final AttachmentLob lob = getLob(attachment);
 					InputStream inputStream;
 					if (lob == null || (inputStream = lob.getAttachment()) == null) {
-						return null;
+						throw new IOException($m("AbstractAttachmentService.0"));
 					}
 					FileUtils.copyFile(inputStream, oFile);
 				}
@@ -184,7 +190,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 					if (lob != null) {
 						final int refs = lob.getRefs();
 						if (refs == 0 && count("md5=?", md5) == 0) {
-							lobManager.delete(new ExpressionValue("md=?", md5));
+							deleteAttachment(md5);
 						} else {
 							if (refs > 0) {
 								lob.setRefs(refs - 1);

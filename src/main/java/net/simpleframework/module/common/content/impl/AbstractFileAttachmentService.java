@@ -39,7 +39,9 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	@Override
 	public AttachmentLob getLob(final T attachment) throws IOException {
 		final AttachmentLob lob = super.getLob(attachment);
-		lob.setAttachment(new FileInputStream(new File(_getHomedir() + lob.getMd())));
+		if (lob != null) {
+			lob.setAttachment(new FileInputStream(new File(_getHomedir() + lob.getMd())));
+		}
 		return lob;
 	}
 
@@ -48,5 +50,11 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 			throws IOException {
 		FileUtils.copyFile(new FileInputStream(af.getAttachment()),
 				new File(_getHomedir() + af.getMd5()));
+	}
+
+	@Override
+	protected void deleteAttachment(final String md) {
+		super.deleteAttachment(md);
+		new File(_getHomedir() + md).delete();
 	}
 }
