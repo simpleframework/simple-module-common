@@ -48,7 +48,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 	}
 
 	@Override
-	public AttachmentLob getLob(final T attachment) {
+	public AttachmentLob getLob(final T attachment) throws IOException {
 		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
@@ -99,16 +99,21 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 			// lob
 			AttachmentLob lob;
-			if ((lob = lobManager.queryForBean(new ExpressionValue("md=?", md5))) == null) {
+			if ((lob = getLob(attachment)) == null) {
 				lob = createLob();
 				lob.setMd(md5);
-				lob.setAttachment(new FileInputStream(af.getAttachment()));
+				setAttachment(lob, af);
 				lobManager.insert(lob);
 			} else {
 				lob.setRefs(lob.getRefs() + 1);
 				lobManager.update(new String[] { "refs" }, lob);
 			}
 		}
+	}
+
+	protected void setAttachment(final AttachmentLob lob, final AttachmentFile af)
+			throws IOException {
+		lob.setAttachment(new FileInputStream(af.getAttachment()));
 	}
 
 	private String tmpdir;
@@ -138,19 +143,14 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		final File oFile = new File(filename);
 		final AttachmentFile af = new AttachmentFile(oFile, attachment.getMd5()) {
 			@Override
-			public File getAttachment() {
+			public File getAttachment() throws IOException {
 				if (!oFile.exists()) {
 					final AttachmentLob lob = getLob(attachment);
 					InputStream inputStream;
 					if (lob == null || (inputStream = lob.getAttachment()) == null) {
 						return null;
 					}
-					try {
-						FileUtils.copyFile(inputStream, oFile);
-					} catch (final IOException e) {
-						log.error(e);
-						return null;
-					}
+					FileUtils.copyFile(inputStream, oFile);
 				}
 				return super.getAttachment();
 			};
