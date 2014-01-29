@@ -1,7 +1,6 @@
 package net.simpleframework.module.common.content;
 
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
-import net.simpleframework.ado.db.DbEntityTable;
 import net.simpleframework.ado.db.common.EntityInterceptor;
 import net.simpleframework.common.ID;
 
@@ -95,8 +94,6 @@ public class Attachment extends AbstractUserAwareBean {
 	public String toString() {
 		return getTopic();
 	}
-
-	public static final DbEntityTable TBL = new DbEntityTable(Attachment.class, "sf_attachment");
 
 	private static final long serialVersionUID = 7644674999064418448L;
 }

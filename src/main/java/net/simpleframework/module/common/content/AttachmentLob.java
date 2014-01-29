@@ -3,7 +3,6 @@ package net.simpleframework.module.common.content;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import net.simpleframework.ado.db.DbEntityTable;
 import net.simpleframework.ado.db.common.EntityInterceptor;
 
 /**
@@ -52,9 +51,6 @@ public class AttachmentLob implements Serializable {
 	public String toString() {
 		return getMd();
 	}
-
-	public static final DbEntityTable TBL = new DbEntityTable(AttachmentLob.class,
-			"sf_attachment_lob").setUniqueColumns("md").setNoCache(true);
 
 	private static final long serialVersionUID = 1757957179977035488L;
 }
