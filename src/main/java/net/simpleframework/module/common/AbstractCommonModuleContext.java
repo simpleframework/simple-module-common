@@ -1,10 +1,8 @@
 package net.simpleframework.module.common;
 
-import net.simpleframework.ado.db.DbEntityTable;
 import net.simpleframework.common.th.NotImplementedException;
 import net.simpleframework.ctx.AbstractADOModuleContext;
 import net.simpleframework.module.common.content.Attachment;
-import net.simpleframework.module.common.content.AttachmentLob;
 import net.simpleframework.module.common.content.IAttachmentService;
 
 /**
@@ -20,9 +18,4 @@ public abstract class AbstractCommonModuleContext extends AbstractADOModuleConte
 	public IAttachmentService<? extends Attachment> getAttachmentService() {
 		throw NotImplementedException.of(getClass(), "getAttachmentService");
 	}
-
-	protected static final DbEntityTable SF_ATTACHMENT = new DbEntityTable(Attachment.class,
-			"sf_attachment");
-	protected static final DbEntityTable SF_ATTACHMENT_LOB = new DbEntityTable(AttachmentLob.class,
-			"sf_attachment_lob").setUniqueColumns("md").setNoCache(true);
 }
