@@ -15,7 +15,6 @@ import net.simpleframework.ado.db.common.ExpressionValue;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.BeanUtils;
-import net.simpleframework.common.Convert;
 import net.simpleframework.common.FileUtils;
 import net.simpleframework.common.ID;
 import net.simpleframework.common.StringUtils;
@@ -163,7 +162,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 			private static final long serialVersionUID = 3689368709808495226L;
 
-		}.setId(Convert.toString(attachment.getId())).setSize(attachment.getAttachsize())
+		}.setId(attachment.getId().toString()).setSize(attachment.getAttachsize())
 				.setTopic(attachment.getTopic()).setType(attachment.getAttachtype())
 				.setCreateDate(attachment.getCreateDate()).setDownloads(attachment.getDownloads())
 				.setDescription(attachment.getDescription());
