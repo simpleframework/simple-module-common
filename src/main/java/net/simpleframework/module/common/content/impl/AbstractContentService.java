@@ -16,7 +16,7 @@ import net.simpleframework.common.coll.ArrayUtils;
 import net.simpleframework.ctx.permission.LoginUser;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
-import net.simpleframework.module.common.DescriptionLocalUtils;
+import net.simpleframework.module.common.DescriptionLogUtils;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
 import net.simpleframework.module.common.content.AbstractContentBean;
 import net.simpleframework.module.common.content.EContentStatus;
@@ -98,7 +98,7 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 				cal.add(Calendar.SECOND, dur);
 				if (cal.getTime().before(new Date())) {
 					t.setRecommendation(0);
-					DescriptionLocalUtils.set(t,
+					DescriptionLogUtils.set(t,
 							$m("AbstractContentService.0", Convert.toDateString(rDate), dur));
 					update(new String[] { "recommendation" }, t);
 				}
