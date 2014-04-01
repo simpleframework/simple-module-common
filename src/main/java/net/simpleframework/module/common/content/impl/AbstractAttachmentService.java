@@ -149,13 +149,15 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		final AttachmentFile af = new AttachmentFile(oFile, attachment.getMd5()) {
 			@Override
 			public File getAttachment() throws IOException {
-				if (!oFile.exists()) {
-					final AttachmentLob lob = getLob(attachment);
-					InputStream inputStream;
-					if (lob == null || (inputStream = lob.getAttachment()) == null) {
-						throw new IOException($m("AbstractAttachmentService.0"));
+				synchronized (this) {
+					if (!oFile.exists()) {
+						final AttachmentLob lob = getLob(attachment);
+						InputStream inputStream;
+						if (lob == null || (inputStream = lob.getAttachment()) == null) {
+							throw new IOException($m("AbstractAttachmentService.0"));
+						}
+						FileUtils.copyFile(inputStream, oFile);
 					}
-					FileUtils.copyFile(inputStream, oFile);
 				}
 				return super.getAttachment();
 			};
