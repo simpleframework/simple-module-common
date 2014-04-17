@@ -3,6 +3,7 @@ package net.simpleframework.module.common.content;
 import java.util.Date;
 
 import net.simpleframework.ado.bean.AbstractTextDescriptionBean;
+import net.simpleframework.ado.bean.IDateAwareBean;
 import net.simpleframework.ado.bean.INameBeanAware;
 import net.simpleframework.ado.bean.IOrderBeanAware;
 import net.simpleframework.ado.bean.ITreeBeanAware;
@@ -16,7 +17,7 @@ import net.simpleframework.common.ID;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean implements
-		INameBeanAware, ITreeBeanAware, IOrderBeanAware {
+		INameBeanAware, ITreeBeanAware, IOrderBeanAware, IDateAwareBean {
 	/* 父id */
 	private ID parentId;
 
@@ -53,6 +54,7 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 		this.mark = mark;
 	}
 
+	@Override
 	public Date getCreateDate() {
 		if (createDate == null) {
 			createDate = new Date();
@@ -60,6 +62,7 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 		return createDate;
 	}
 
+	@Override
 	public void setCreateDate(final Date createDate) {
 		this.createDate = createDate;
 	}
