@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -55,21 +56,20 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 	@Override
 	public void insert(final ID contentId, final ID userId,
-			final Map<String, AttachmentFile> attachments) throws IOException {
+			final Collection<AttachmentFile> attachments) throws IOException {
 		insert(contentId, userId, attachments, null);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void insert(final ID contentId, final ID userId,
-			final Map<String, AttachmentFile> attachments, final Map<String, Object> exts)
+			final Collection<AttachmentFile> attachments, final Map<String, Object> exts)
 			throws IOException {
 		if (attachments == null || attachments.size() == 0) {
 			return;
 		}
 		final IDbEntityManager<AttachmentLob> lobManager = getLobEntityManager();
-		for (final Map.Entry<String, AttachmentFile> entry : attachments.entrySet()) {
-			final AttachmentFile af = entry.getValue();
+		for (final AttachmentFile af : attachments) {
 			final String md5 = af.getMd5();
 			final T attachment = createAttachmentFile(af);
 			attachment.setId(ID.of(af.getId()));

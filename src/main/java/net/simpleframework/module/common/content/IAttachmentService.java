@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 import net.simpleframework.ado.query.IDataQuery;
@@ -32,7 +33,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 */
 	AttachmentLob getLob(T attachment) throws IOException;
 
-	void insert(ID contentId, ID userId, Map<String, AttachmentFile> attachments) throws IOException;
+	void insert(ID contentId, ID userId, Collection<AttachmentFile> attachments) throws IOException;
 
 	/**
 	 * 插入附件
@@ -43,7 +44,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 * @param exts
 	 *           扩展属性
 	 */
-	void insert(ID contentId, ID userId, Map<String, AttachmentFile> attachments,
+	void insert(ID contentId, ID userId, Collection<AttachmentFile> attachments,
 			Map<String, Object> exts) throws IOException;
 
 	/**
