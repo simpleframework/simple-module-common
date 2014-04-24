@@ -3,6 +3,7 @@ package net.simpleframework.module.common.content;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import net.simpleframework.ado.bean.IAttachmentLobAware;
 import net.simpleframework.ado.db.common.EntityInterceptor;
 
 /**
@@ -12,7 +13,7 @@ import net.simpleframework.ado.db.common.EntityInterceptor;
  *         http://www.simpleframework.net
  */
 @EntityInterceptor(listenerTypes = { "net.simpleframework.module.log.EntityDeleteLogAdapter" })
-public class AttachmentLob implements Serializable {
+public class AttachmentLob implements IAttachmentLobAware, Serializable {
 
 	/* 摘要值，唯一键值 */
 	private String md;
@@ -23,6 +24,7 @@ public class AttachmentLob implements Serializable {
 	/* 附件 */
 	private InputStream attachment;
 
+	@Override
 	public String getMd() {
 		return md;
 	}
@@ -39,6 +41,7 @@ public class AttachmentLob implements Serializable {
 		this.refs = refs;
 	}
 
+	@Override
 	public InputStream getAttachment() {
 		return attachment;
 	}
