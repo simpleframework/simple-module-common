@@ -14,7 +14,6 @@ import net.simpleframework.common.Convert;
 import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.ArrayUtils;
 import net.simpleframework.ctx.permission.LoginUser;
-import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.DescriptionLogUtils;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
@@ -30,14 +29,6 @@ import net.simpleframework.module.common.content.IContentService;
  */
 public abstract class AbstractContentService<T extends AbstractContentBean> extends
 		AbstractDbBeanService<T> implements IContentService<T> {
-
-	protected abstract ColumnData[] getDefaultOrderColumns();
-
-	@Override
-	public IDataQuery<T> queryByParams(final FilterItems params, final ColumnData... orderColumns) {
-		return super.queryByParams(params,
-				ArrayUtils.isEmpty(orderColumns) ? getDefaultOrderColumns() : orderColumns);
-	}
 
 	@Override
 	public IDataQuery<T> queryBeans(final AbstractCategoryBean category,
@@ -71,16 +62,6 @@ public abstract class AbstractContentService<T extends AbstractContentBean> exte
 		return queryBeans(category, EContentStatus.publish, timePeriod,
 				FilterItems.of(new FilterItem("recommendation", EFilterRelation.gt, 0)),
 				RECOMMENDATION_ORDER_COLUMNS);
-	}
-
-	@Override
-	public IDataQuery<T> queryMyBeans(final Object user) {
-		return queryBeans(
-				null,
-				null,
-				null,
-				FilterItems.of().addEqual("userId",
-						(user instanceof PermissionUser) ? ((PermissionUser) user).getId() : user));
 	}
 
 	@SuppressWarnings("unchecked")

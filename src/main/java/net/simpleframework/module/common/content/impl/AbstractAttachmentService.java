@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.IParamsValue;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.db.common.ExpressionValue;
@@ -33,12 +34,13 @@ import net.simpleframework.module.common.content.IAttachmentService;
  */
 public abstract class AbstractAttachmentService<T extends Attachment> extends
 		AbstractDbBeanService<T> implements IAttachmentService<T> {
+
 	@Override
-	public IDataQuery<T> queryByContent(final Object content) {
-		if (content == null) {
+	public IDataQuery<T> queryByContent(final Object contentId) {
+		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return query("contentId=?", content);
+		return queryByParams(FilterItems.of().addEqual("contentId", contentId));
 	}
 
 	protected IDbEntityManager<AttachmentLob> getLobEntityManager() {

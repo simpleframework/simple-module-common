@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content.impl;
 
 import net.simpleframework.ado.ColumnData;
+import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
@@ -22,7 +23,7 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return query("contentId=? order by createDate desc", getParam(contentId));
+		return queryByParams(FilterItems.of().addEqual("contentId", contentId));
 	}
 
 	@Override
@@ -31,11 +32,6 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 			return DataQueryUtils.nullQuery();
 		}
 		return super.queryChildren(parent, ColumnData.DESC("createDate"));
-	}
-
-	@Override
-	public IDataQuery<T> queryAll() {
-		return query("1=1 order by createDate desc");
 	}
 
 	@Override

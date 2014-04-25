@@ -4,6 +4,7 @@ import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.TimePeriod;
+import net.simpleframework.ctx.service.ado.IUserBeanServiceAware;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
 
 /**
@@ -12,7 +13,8 @@ import net.simpleframework.ctx.service.ado.db.IDbBeanService;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public interface IContentService<T extends AbstractContentBean> extends IDbBeanService<T> {
+public interface IContentService<T extends AbstractContentBean> extends IDbBeanService<T>,
+		IUserBeanServiceAware<T> {
 
 	/**
 	 * 按指定条件查找
@@ -56,14 +58,6 @@ public interface IContentService<T extends AbstractContentBean> extends IDbBeanS
 	 * @return
 	 */
 	IDataQuery<T> queryRecommendationBeans(AbstractCategoryBean category, TimePeriod timePeriod);
-
-	/**
-	 * 查询我的内容
-	 * 
-	 * @param user
-	 * @return
-	 */
-	IDataQuery<T> queryMyBeans(Object user);
 
 	void doUnRecommendationTask();
 }
