@@ -17,5 +17,5 @@ public interface ICommentService<T extends AbstractComment> extends IDbBeanServi
 	 * @param content
 	 * @return
 	 */
-	IDataQuery<T> queryByContent(Object content);
+	IDataQuery<T> queryComments(Object contentId);
 }
