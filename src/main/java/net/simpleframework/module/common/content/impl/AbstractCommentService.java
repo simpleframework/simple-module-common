@@ -23,7 +23,7 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(FilterItems.of().addEqual("contentId", contentId));
+		return queryByParams(FilterItems.of("contentId", contentId));
 	}
 
 	@Override
