@@ -111,7 +111,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 
 	@Override
 	public AttachmentLob getLob(final T attachment) throws IOException {
-		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", attachment.getMd5()));
+		return attachment == null ? null : getLobEntityManager().queryForBean(
+				new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
 	protected void setAttachment(final AttachmentLob lob, final AttachmentFile af)
