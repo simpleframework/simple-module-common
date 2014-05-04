@@ -1,9 +1,6 @@
 package net.simpleframework.module.common.content;
 
-import java.util.Date;
-
 import net.simpleframework.ado.bean.AbstractTextDescriptionBean;
-import net.simpleframework.ado.bean.IDateAwareBean;
 import net.simpleframework.ado.bean.INameBeanAware;
 import net.simpleframework.ado.bean.IOrderBeanAware;
 import net.simpleframework.ado.bean.ITreeBeanAware;
@@ -17,7 +14,7 @@ import net.simpleframework.common.ID;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean implements
-		INameBeanAware, ITreeBeanAware, IOrderBeanAware, IDateAwareBean {
+		INameBeanAware, ITreeBeanAware, IOrderBeanAware {
 	/* 父id */
 	private ID parentId;
 
@@ -26,12 +23,6 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 
 	/* 标识 */
 	private ECategoryMark mark;
-
-	/* 创建日期 */
-	private Date createDate;
-
-	/* 创建人 */
-	private ID userId;
 
 	/* 排序字段 */
 	private int oorder;
@@ -52,27 +43,6 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 
 	public void setMark(final ECategoryMark mark) {
 		this.mark = mark;
-	}
-
-	@Override
-	public Date getCreateDate() {
-		if (createDate == null) {
-			createDate = new Date();
-		}
-		return createDate;
-	}
-
-	@Override
-	public void setCreateDate(final Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public ID getUserId() {
-		return userId;
-	}
-
-	public void setUserId(final ID userId) {
-		this.userId = userId;
 	}
 
 	@Override
