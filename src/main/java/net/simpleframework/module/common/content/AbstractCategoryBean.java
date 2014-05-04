@@ -18,11 +18,8 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 	/* 父id */
 	private ID parentId;
 
-	/* 名称，唯一 */
+	/* 名称或编码，唯一 */
 	private String name;
-
-	/* 标识 */
-	private ECategoryMark mark;
 
 	/* 排序字段 */
 	private int oorder;
@@ -35,14 +32,6 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 	@Override
 	public void setName(final String name) {
 		this.name = name;
-	}
-
-	public ECategoryMark getMark() {
-		return mark == null ? ECategoryMark.normal : mark;
-	}
-
-	public void setMark(final ECategoryMark mark) {
-		this.mark = mark;
 	}
 
 	@Override
