@@ -43,6 +43,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 * @param attachments
 	 * @param exts
 	 *           扩展属性
+	 * @throws IOException
 	 */
 	void insert(ID contentId, ID userId, Collection<AttachmentFile> attachments,
 			Map<String, Object> exts) throws IOException;

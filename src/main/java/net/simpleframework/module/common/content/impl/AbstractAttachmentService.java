@@ -79,10 +79,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			attachment.setTopic(FileUtils.stripFilenameExtension(af.getTopic()));
 			attachment.setMd5(md5);
 			attachment.setAttachsize(af.getAttachment().length());
-			final String ext = FileUtils.getFilenameExtension(af.getTopic());
-			if (StringUtils.hasText(ext)) {
-				attachment.setAttachtype(ext.toLowerCase());
-			}
+			attachment.setAttachtype(af.getType());
 			attachment.setCreateDate(new Date());
 			attachment.setUserId(userId);
 			attachment.setDescription(af.getDescription());
