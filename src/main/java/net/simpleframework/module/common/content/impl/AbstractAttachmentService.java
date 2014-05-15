@@ -107,6 +107,15 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 	}
 
 	@Override
+	public void updateLob(final T attachment, final InputStream iStream) throws IOException {
+		final AttachmentLob lob = getLob(attachment);
+		if (lob != null) {
+			lob.setAttachment(iStream);
+			getLobEntityManager().update(new String[] { "attachment" }, lob);
+		}
+	}
+
+	@Override
 	public AttachmentLob getLob(final T attachment) throws IOException {
 		return attachment == null ? null : getLobEntityManager().queryForBean(
 				new ExpressionValue("md=?", attachment.getMd5()));

@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -47,6 +48,16 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 */
 	void insert(ID contentId, ID userId, Collection<AttachmentFile> attachments,
 			Map<String, Object> exts) throws IOException;
+
+	/**
+	 * 更新附件
+	 * 
+	 * @param attachment
+	 * @param lob
+	 * @return
+	 * @throws IOException
+	 */
+	void updateLob(T attachment, InputStream iStream) throws IOException;
 
 	/**
 	 * 创建附件对象

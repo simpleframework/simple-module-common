@@ -3,6 +3,7 @@ package net.simpleframework.module.common.content.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.simpleframework.common.FileUtils;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
@@ -34,6 +35,11 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 			FileUtils.createDirectoryRecursively(dir);
 		}
 		return dir.getAbsolutePath() + File.separator;
+	}
+
+	@Override
+	public void updateLob(final T attachment, final InputStream iStream) throws IOException {
+		FileUtils.copyFile(iStream, new File(_getHomedir() + attachment.getMd5()));
 	}
 
 	@Override
