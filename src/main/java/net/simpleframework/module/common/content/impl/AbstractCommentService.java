@@ -2,7 +2,6 @@ package net.simpleframework.module.common.content.impl;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
-import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
@@ -32,20 +31,5 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 			return DataQueryUtils.nullQuery();
 		}
 		return super.queryChildren(parent, ColumnData.DESC("createDate"));
-	}
-
-	@Override
-	public void onInit() throws Exception {
-		addListener(new DbEntityAdapterEx() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void onBeforeUpdate(final IDbEntityManager<?> manager, final String[] columns,
-					final Object[] beans) {
-				super.onBeforeUpdate(manager, columns, beans);
-				for (final Object o : beans) {
-					assertParentId((T) o);
-				}
-			}
-		});
 	}
 }
