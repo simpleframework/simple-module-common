@@ -12,7 +12,6 @@ import net.simpleframework.common.ID;
  */
 @EntityInterceptor(listenerTypes = { "net.simpleframework.module.log.EntityDeleteLogAdapter" })
 public class Attachment extends AbstractUserAwareBean {
-
 	/* 外键，文档id */
 	private ID contentId;
 
@@ -23,11 +22,11 @@ public class Attachment extends AbstractUserAwareBean {
 	private String topic;
 
 	/* 附件类型 */
-	private String attachtype;
-
+	private int attachtype;
 	/* 附件大小 */
 	private long attachsize;
-
+	/* 文件扩展名 */
+	private String fileExt;
 	/* 下载次数 */
 	private int downloads;
 
@@ -58,12 +57,20 @@ public class Attachment extends AbstractUserAwareBean {
 		this.topic = topic;
 	}
 
-	public String getAttachtype() {
+	public int getAttachtype() {
 		return attachtype;
 	}
 
-	public void setAttachtype(final String attachtype) {
+	public void setAttachtype(final int attachtype) {
 		this.attachtype = attachtype;
+	}
+
+	public String getFileExt() {
+		return fileExt;
+	}
+
+	public void setFileExt(final String fileExt) {
+		this.fileExt = fileExt;
 	}
 
 	public long getAttachsize() {

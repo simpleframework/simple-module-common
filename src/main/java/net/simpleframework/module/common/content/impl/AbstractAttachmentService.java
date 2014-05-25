@@ -150,7 +150,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			return null;
 		}
 		String filename = getTempdir() + attachment.getMd5();
-		final String ext = attachment.getAttachtype();
+		final String ext = attachment.getFileExt();
 		if (StringUtils.hasText(ext)) {
 			filename += "." + ext;
 		}
@@ -174,7 +174,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			private static final long serialVersionUID = 3689368709808495226L;
 
 		}.setId(attachment.getId().toString()).setSize(attachment.getAttachsize())
-				.setTopic(attachment.getTopic()).setType(attachment.getAttachtype())
+				.setTopic(attachment.getTopic()).setType(attachment.getAttachtype()).setExt(ext)
 				.setCreateDate(attachment.getCreateDate()).setDownloads(attachment.getDownloads())
 				.setDescription(attachment.getDescription());
 		return af;
