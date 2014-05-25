@@ -80,6 +80,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			attachment.setMd5(md5);
 			attachment.setAttachsize(af.getAttachment().length());
 			attachment.setAttachtype(af.getType());
+			attachment.setFileExt(af.getExt());
 			attachment.setCreateDate(new Date());
 			attachment.setUserId(userId);
 			attachment.setDescription(af.getDescription());
