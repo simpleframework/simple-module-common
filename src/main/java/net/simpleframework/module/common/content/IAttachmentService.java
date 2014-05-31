@@ -21,10 +21,12 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	/**
 	 * 获取文档的附件列表
 	 * 
-	 * @param ContentBean
+	 * @param contentId
 	 * @return
 	 */
-	IDataQuery<T> queryByContent(Object content);
+	IDataQuery<T> queryByContent(Object contentId);
+
+	IDataQuery<T> queryByContent(Object contentId, int attachtype);
 
 	/**
 	 * 获取lob对象

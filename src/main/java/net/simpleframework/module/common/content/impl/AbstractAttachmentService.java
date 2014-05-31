@@ -36,6 +36,15 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		AbstractDbBeanService<T> implements IAttachmentService<T> {
 
 	@Override
+	public IDataQuery<T> queryByContent(final Object contentId, final int attachtype) {
+		if (contentId == null) {
+			return DataQueryUtils.nullQuery();
+		}
+		return queryByParams(FilterItems.of("contentId", contentId)
+				.addEqual("attachtype", attachtype));
+	}
+
+	@Override
 	public IDataQuery<T> queryByContent(final Object contentId) {
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
