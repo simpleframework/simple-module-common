@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Map;
 
 import net.simpleframework.ado.FilterItems;
@@ -123,28 +122,13 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		if (lob != null) {
 			lob.setAttachment(iStream);
 			getLobEntityManager().update(new String[] { "attachment" }, lob);
-			NULL_LOBs.remove(lob.getMd());
 		}
 	}
 
-	// 避免每次从数据库获取lob
-	final HashSet<String> NULL_LOBs = new HashSet<String>();
-
 	@Override
 	public AttachmentLob getLob(final T attachment) throws IOException {
-		if (attachment == null) {
-			return null;
-		}
-		final String md5 = attachment.getMd5();
-		if (NULL_LOBs.contains(md5)) {
-			return null;
-		}
-		final AttachmentLob lob = getLobEntityManager()
-				.queryForBean(new ExpressionValue("md=?", md5));
-		if (lob == null) {
-			NULL_LOBs.add(md5);
-		}
-		return lob;
+		return attachment == null ? null : getLobEntityManager().queryForBean(
+				new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
 	protected void setAttachment(final AttachmentLob lob, final AttachmentFile af)
