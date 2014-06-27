@@ -43,10 +43,10 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	}
 
 	@Override
-	public AttachmentLob getLob(final T attachment) throws IOException {
-		final AttachmentLob lob = super.getLob(attachment);
+	public AttachmentLob getLob(final String md) throws IOException {
+		final AttachmentLob lob = super.getLob(md);
 		if (lob != null) {
-			lob.setAttachment(new FileInputStream(new File(_getHomedir() + lob.getMd())));
+			lob.setAttachment(new FileInputStream(new File(_getHomedir() + md)));
 		}
 		return lob;
 	}

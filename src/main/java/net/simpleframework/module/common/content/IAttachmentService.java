@@ -36,6 +36,8 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 */
 	AttachmentLob getLob(T attachment) throws IOException;
 
+	AttachmentLob getLob(String md) throws IOException;
+
 	void insert(ID contentId, ID userId, Collection<AttachmentFile> attachments) throws IOException;
 
 	/**
