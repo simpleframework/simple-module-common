@@ -20,15 +20,15 @@ public interface IContentService<T extends AbstractContentBean> extends IDbBeanS
 	 * 按指定条件查找
 	 * 
 	 * @param category
-	 *           类目
+	 *        类目
 	 * @param status
-	 *           状态
+	 *        状态
 	 * @param timePeriod
-	 *           时间范围
+	 *        时间范围
 	 * @param filterItems
-	 *           其它条件
+	 *        其它条件
 	 * @param orderColumns
-	 *           排序
+	 *        排序
 	 * @return
 	 */
 	IDataQuery<T> queryBeans(AbstractCategoryBean category, EContentStatus status,
