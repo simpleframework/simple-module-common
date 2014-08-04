@@ -2,6 +2,8 @@ package net.simpleframework.module.common.content.impl;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
+import net.simpleframework.ado.IParamsValue;
+import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
@@ -31,5 +33,30 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 			return DataQueryUtils.nullQuery();
 		}
 		return super.queryChildren(parent, ColumnData.DESC("createDate"));
+	}
+
+	protected void updateComments(final T comment, final int i) {
+	}
+
+	protected void addUpdateCommentsListener() {
+		addListener(new DbEntityAdapterEx() {
+			@Override
+			public void onBeforeDelete(final IDbEntityManager<?> manager,
+					final IParamsValue paramsValue) {
+				super.onBeforeDelete(manager, paramsValue);
+				for (final T comment : coll(paramsValue)) {
+					updateComments(comment, -1);
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onAfterInsert(final IDbEntityManager<?> manager, final Object[] beans) {
+				super.onAfterInsert(manager, beans);
+				for (final Object o : beans) {
+					updateComments((T) o, 0);
+				}
+			}
+		});
 	}
 }
