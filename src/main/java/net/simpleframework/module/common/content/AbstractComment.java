@@ -19,7 +19,7 @@ public abstract class AbstractComment extends AbstractUserAwareBean {
 	private ID contentId;
 
 	/* 内容 */
-	private String comment;
+	private String ccomment;
 
 	public ID getContentId() {
 		return contentId;
@@ -29,12 +29,12 @@ public abstract class AbstractComment extends AbstractUserAwareBean {
 		this.contentId = contentId;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getCcomment() {
+		return ccomment;
 	}
 
-	public void setComment(final String comment) {
-		this.comment = comment;
+	public void setCcomment(final String ccomment) {
+		this.ccomment = ccomment;
 		removeAttr("_doc");
 	}
 
@@ -42,13 +42,13 @@ public abstract class AbstractComment extends AbstractUserAwareBean {
 	public Document doc() {
 		Document doc = (Document) getAttr("_doc");
 		if (doc == null) {
-			setAttr("_doc", doc = HtmlUtils.createHtmlDocument(getComment()));
+			setAttr("_doc", doc = HtmlUtils.createHtmlDocument(getCcomment()));
 		}
 		return doc;
 	}
 
 	@Override
 	public String toString() {
-		return getComment();
+		return getCcomment();
 	}
 }
