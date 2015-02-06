@@ -44,13 +44,6 @@ public enum EContentStatus {
 		}
 	},
 
-	abort {
-		@Override
-		public String toString() {
-			return $m("EContentStatus.abort");
-		}
-	},
-
 	delete {
 		@Override
 		public String toString() {
