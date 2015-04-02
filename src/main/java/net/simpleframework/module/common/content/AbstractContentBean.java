@@ -147,11 +147,12 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 
 	@ColumnMeta(ignore = true)
 	public Document doc() {
-		Document doc = (Document) getAttr("_doc");
-		if (doc == null) {
-			setAttr("_doc", doc = HtmlUtils.createHtmlDocument(getContent()));
-		}
-		return doc;
+		return getAttrCache("_doc", new IVal<Document>() {
+			@Override
+			public Document get() {
+				return HtmlUtils.createHtmlDocument(getContent());
+			}
+		});
 	}
 
 	public static int CONTENT_MARK_IMG = 1; // 含有图片 01

@@ -40,11 +40,12 @@ public abstract class AbstractComment extends AbstractUserAwareBean {
 
 	@ColumnMeta(ignore = true)
 	public Document doc() {
-		Document doc = (Document) getAttr("_doc");
-		if (doc == null) {
-			setAttr("_doc", doc = HtmlUtils.createHtmlDocument(getCcomment()));
-		}
-		return doc;
+		return getAttrCache("_doc", new IVal<Document>() {
+			@Override
+			public Document get() {
+				return HtmlUtils.createHtmlDocument(getCcomment());
+			}
+		});
 	}
 
 	@Override
