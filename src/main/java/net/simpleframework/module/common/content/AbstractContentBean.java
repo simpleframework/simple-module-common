@@ -147,7 +147,7 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 
 	@ColumnMeta(ignore = true)
 	public Document doc() {
-		return getAttrCache("_doc", new IVal<Document>() {
+		return getAttrCache("_doc", new CacheV<Document>() {
 			@Override
 			public Document get() {
 				return HtmlUtils.createHtmlDocument(getContent());
