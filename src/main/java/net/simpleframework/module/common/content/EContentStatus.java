@@ -15,42 +15,36 @@ public enum EContentStatus {
 			return $m("EContentStatus.edit");
 		}
 	},
-
 	audit {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.audit");
 		}
 	},
-
 	publish {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.publish");
 		}
 	},
-
 	closed {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.closed");
 		}
 	},
-
 	lock {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.lock");
 		}
 	},
-
 	delete {
 		@Override
 		public String toString() {
 			return $m("EContentStatus.delete");
 		}
 	},
-
 	temp {
 		@Override
 		public String toString() {
