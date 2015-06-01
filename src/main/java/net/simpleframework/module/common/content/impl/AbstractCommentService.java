@@ -42,7 +42,7 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 		addListener(new DbEntityAdapterEx() {
 			@Override
 			public void onBeforeDelete(final IDbEntityManager<?> manager,
-					final IParamsValue paramsValue) {
+					final IParamsValue paramsValue) throws Exception {
 				super.onBeforeDelete(manager, paramsValue);
 				for (final T comment : coll(paramsValue)) {
 					updateComments(comment, -1);
@@ -51,7 +51,8 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public void onAfterInsert(final IDbEntityManager<?> manager, final Object[] beans) {
+			public void onAfterInsert(final IDbEntityManager<?> manager, final Object[] beans)
+					throws Exception {
 				super.onAfterInsert(manager, beans);
 				for (final Object o : beans) {
 					updateComments((T) o, 0);

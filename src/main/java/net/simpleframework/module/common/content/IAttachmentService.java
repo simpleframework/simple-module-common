@@ -61,7 +61,7 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 * @return
 	 * @throws IOException
 	 */
-	void updateLob(T attachment, InputStream iStream) throws IOException;
+	void updateAttachment(T attachment, InputStream iStream) throws IOException;
 
 	/**
 	 * 创建附件对象

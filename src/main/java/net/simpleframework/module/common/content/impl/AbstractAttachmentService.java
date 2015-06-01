@@ -79,7 +79,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		if (attachments == null || attachments.size() == 0) {
 			return;
 		}
-		final IDbEntityManager<AttachmentLob> lobManager = getLobEntityManager();
+
 		for (final AttachmentFile af : attachments) {
 			final String md5 = af.getMd5();
 			final T attachment = createAttachmentFile(af);
@@ -93,35 +93,20 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			attachment.setCreateDate(new Date());
 			attachment.setUserId(userId);
 			attachment.setDescription(af.getDescription());
-
 			if (exts != null) {
 				for (final Map.Entry<String, Object> p : exts.entrySet()) {
 					BeanUtils.setProperty(attachment, p.getKey(), p.getValue());
 				}
 			}
-
 			getEntityManager().insert(attachment);
 
 			// lob
 			AttachmentLob lob;
 			if ((lob = getLob(attachment)) == null) {
-				lob = createLob();
-				lob.setMd(md5);
-				setAttachment(lob, af);
-				lobManager.insert(lob);
+				insertAttachment(af);
 			} else {
-				lob.setRefs(lob.getRefs() + 1);
-				lobManager.update(new String[] { "refs" }, lob);
+				updateRefs(lob, lob.getRefs() + 1);
 			}
-		}
-	}
-
-	@Override
-	public void updateLob(final T attachment, final InputStream iStream) throws IOException {
-		final AttachmentLob lob = getLob(attachment);
-		if (lob != null) {
-			lob.setAttachment(iStream);
-			getLobEntityManager().update(new String[] { "attachment" }, lob);
 		}
 	}
 
@@ -135,13 +120,30 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", md));
 	}
 
-	protected void setAttachment(final AttachmentLob lob, final AttachmentFile af)
-			throws IOException {
+	protected void insertAttachment(final AttachmentFile af) throws IOException {
+		final AttachmentLob lob = createLob();
+		lob.setMd(af.getMd5());
 		lob.setAttachment(new FileInputStream(af.getAttachment()));
+		getLobEntityManager().insert(lob);
 	}
 
-	protected void deleteAttachment(final String md) {
+	protected void deleteAttachment(final String md) throws IOException {
 		getLobEntityManager().delete(new ExpressionValue("md=?", md));
+	}
+
+	protected void updateRefs(final AttachmentLob lob, final int refs) throws IOException {
+		lob.setRefs(Math.max(refs, 0));
+		getLobEntityManager().update(new String[] { "refs" }, lob);
+	}
+
+	@Override
+	public void updateAttachment(final T attachment, final InputStream iStream) throws IOException {
+		// 更新附件内容
+		final AttachmentLob lob = getLob(attachment);
+		if (lob != null) {
+			lob.setAttachment(iStream);
+			getLobEntityManager().update(new String[] { "attachment" }, lob);
+		}
 	}
 
 	private String tmpdir;
@@ -201,27 +203,24 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		addListener(new DbEntityAdapterEx() {
 			@Override
 			public void onBeforeDelete(final IDbEntityManager<?> service,
-					final IParamsValue paramsValue) {
+					final IParamsValue paramsValue) throws Exception {
 				super.onBeforeDelete(service, paramsValue);
 				coll(paramsValue); // 删除前缓存
 			}
 
 			@Override
-			public void onAfterDelete(final IDbEntityManager<?> manager, final IParamsValue paramsValue) {
+			public void onAfterDelete(final IDbEntityManager<?> manager, final IParamsValue paramsValue)
+					throws Exception {
 				super.onAfterDelete(manager, paramsValue);
-				final IDbEntityManager<AttachmentLob> lobManager = getLobEntityManager();
 				for (final Attachment attachment : coll(paramsValue)) {
 					final String md5 = attachment.getMd5();
-					final AttachmentLob lob = lobManager.queryForBean(new ExpressionValue("md=?", md5));
+					final AttachmentLob lob = getLob(md5);
 					if (lob != null) {
 						final int refs = lob.getRefs();
 						if (refs == 0 && count("md5=?", md5) == 0) {
 							deleteAttachment(md5);
 						} else {
-							if (refs > 0) {
-								lob.setRefs(refs - 1);
-								lobManager.update(new String[] { "refs" }, lob);
-							}
+							updateRefs(lob, refs - 1);
 						}
 					}
 				}
