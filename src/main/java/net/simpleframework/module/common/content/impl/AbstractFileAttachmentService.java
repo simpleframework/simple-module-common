@@ -38,29 +38,33 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	}
 
 	@Override
-	public void updateAttachment(final T attachment, final InputStream iStream) throws IOException {
-		FileUtils.copyFile(iStream, new File(_getHomedir() + attachment.getMd5()));
-	}
-
-	@Override
 	public AttachmentLob getLob(final String md) throws IOException {
+		final AttachmentLob lob = super.getLob(md);
+		// 数据库依旧保留lob表，需要refs计数
 		final File file = new File(_getHomedir() + md);
-		if (file.exists()) {
-			final AttachmentLob lob = createLob();
+		if (lob != null && file.exists()) {
 			lob.setAttachment(new FileInputStream(file));
-			return lob;
 		}
-		return null;
+		return lob;
 	}
 
 	@Override
-	protected void insertAttachment(final AttachmentFile af) throws IOException {
-		FileUtils.copyFile(new FileInputStream(af.getAttachment()),
-				new File(_getHomedir() + af.getMd5()));
+	protected void putAttachmentLob(final AttachmentLob lob, final AttachmentFile af)
+			throws IOException {
+		final File file = af.getAttachment();
+		if (file.exists())
+			FileUtils.copyFile(new FileInputStream(file), new File(_getHomedir() + af.getMd5()));
 	}
 
 	@Override
 	protected void deleteAttachment(final String md) throws IOException {
+		super.deleteAttachment(md);
 		new File(_getHomedir() + md).delete();
+	}
+
+	@Override
+	public void updateAttachment(final T attachment, final InputStream iStream) throws IOException {
+		// 直接更新内容
+		FileUtils.copyFile(iStream, new File(_getHomedir() + attachment.getMd5()));
 	}
 }

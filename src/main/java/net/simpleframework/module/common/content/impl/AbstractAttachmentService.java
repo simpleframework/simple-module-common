@@ -123,8 +123,16 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 	protected void insertAttachment(final AttachmentFile af) throws IOException {
 		final AttachmentLob lob = createLob();
 		lob.setMd(af.getMd5());
-		lob.setAttachment(new FileInputStream(af.getAttachment()));
+		putAttachmentLob(lob, af);
 		getLobEntityManager().insert(lob);
+	}
+
+	protected void putAttachmentLob(final AttachmentLob lob, final AttachmentFile af)
+			throws IOException {
+		final File file = af.getAttachment();
+		if (file.exists()) {
+			lob.setAttachment(new FileInputStream(file));
+		}
 	}
 
 	protected void deleteAttachment(final String md) throws IOException {
