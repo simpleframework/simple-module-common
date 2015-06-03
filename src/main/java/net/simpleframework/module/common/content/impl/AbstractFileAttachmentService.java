@@ -52,8 +52,9 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	protected void putAttachmentLob(final AttachmentLob lob, final AttachmentFile af)
 			throws IOException {
 		final File file = af.getAttachment();
-		if (file.exists())
+		if (file.exists()) {
 			FileUtils.copyFile(new FileInputStream(file), new File(_getHomedir() + af.getMd5()));
+		}
 	}
 
 	@Override

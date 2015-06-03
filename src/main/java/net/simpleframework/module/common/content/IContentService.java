@@ -49,15 +49,4 @@ public interface IContentService<T extends AbstractContentBean> extends IDbBeanS
 			ColumnData... orderColumns);
 
 	IDataQuery<T> queryBeans(AbstractCategoryBean oCategory, EContentStatus status);
-
-	/**
-	 * 查询推荐内容
-	 * 
-	 * @param category
-	 * @param timePeriod
-	 * @return
-	 */
-	IDataQuery<T> queryRecommendationBeans(AbstractCategoryBean category, TimePeriod timePeriod);
-
-	void doUnRecommendationTask();
 }

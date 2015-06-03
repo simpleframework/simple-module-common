@@ -1,7 +1,5 @@
 package net.simpleframework.module.common.content;
 
-import java.util.Date;
-
 import net.simpleframework.ado.ColumnMeta;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.ado.bean.IDescriptionBeanAware;
@@ -26,30 +24,17 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	/* 标题 */
 	@ColumnMeta(columnText = "#(AbstractContentBean.1)")
 	private String topic;
-
 	/* 正文内容 */
 	private String content;
+	/* 内容标识 */
+	private int contentMark;
 
 	/* 描述 */
 	@ColumnMeta(columnText = "#(Description)")
 	private String description;
 
-	/* 内容标识 */
-	private int contentMark;
-
-	/* 推荐级别 >=0, 0表示取消推荐 */
-	@ColumnMeta(columnText = "#(AbstractContentBean.2)")
-	private int recommendation;
-
-	/* 推荐日期 */
-	private Date recommendationDate;
-
-	/* 推荐时长, 单位s. 当超出推荐推荐时长后, recommendation=0 */
-	private int recommendationDuration;
-
 	/* 排序字段 */
 	private int oorder;
-
 	/* 统计信息-查看次数 */
 	private long views;
 
@@ -76,30 +61,6 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	public void setContent(final String content) {
 		this.content = content;
 		removeAttr("_doc");
-	}
-
-	public int getRecommendation() {
-		return recommendation;
-	}
-
-	public void setRecommendation(final int recommendation) {
-		this.recommendation = recommendation;
-	}
-
-	public Date getRecommendationDate() {
-		return recommendationDate;
-	}
-
-	public void setRecommendationDate(final Date recommendationDate) {
-		this.recommendationDate = recommendationDate;
-	}
-
-	public int getRecommendationDuration() {
-		return recommendationDuration;
-	}
-
-	public void setRecommendationDuration(final int recommendationDuration) {
-		this.recommendationDuration = recommendationDuration;
 	}
 
 	public int getContentMark() {
