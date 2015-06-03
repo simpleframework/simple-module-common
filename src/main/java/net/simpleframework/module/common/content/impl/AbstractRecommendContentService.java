@@ -14,6 +14,7 @@ import net.simpleframework.common.Convert;
 import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.ArrayUtils;
 import net.simpleframework.ctx.permission.LoginUser;
+import net.simpleframework.ctx.task.ExecutorRunnable;
 import net.simpleframework.module.common.DescriptionLogUtils;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
 import net.simpleframework.module.common.content.AbstractRecommendContentBean;
@@ -28,6 +29,7 @@ import net.simpleframework.module.common.content.IRecommendContentService;
  */
 public abstract class AbstractRecommendContentService<T extends AbstractRecommendContentBean>
 		extends AbstractContentService<T> implements IRecommendContentService<T> {
+
 	private final ColumnData[] RECOMMENDATION_ORDER_COLUMNS = ArrayUtils.add(
 			new ColumnData[] { ColumnData.DESC("recommendation") }, ColumnData.class,
 			getDefaultOrderColumns());
@@ -41,8 +43,7 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public void doUnRecommendationTask() {
+	void doUnRecommendationTask() {
 		final IDataQuery<T> dq = queryRecommendationBeans(null, null);
 		T t;
 		LoginUser.setAdmin();
@@ -61,5 +62,21 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 				}
 			}
 		}
+	}
+
+	protected int getRecommendPeriod() {
+		return 60 * 10;
+	}
+
+	@Override
+	public void onInit() throws Exception {
+		super.onInit();
+
+		getTaskExecutor().addScheduledTask(getRecommendPeriod(), new ExecutorRunnable() {
+			@Override
+			protected void task() throws Exception {
+				doUnRecommendationTask();
+			}
+		});
 	}
 }

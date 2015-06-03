@@ -19,6 +19,4 @@ public interface IRecommendContentService<T extends AbstractRecommendContentBean
 	 * @return
 	 */
 	IDataQuery<T> queryRecommendationBeans(AbstractCategoryBean category, TimePeriod timePeriod);
-
-	void doUnRecommendationTask();
 }
