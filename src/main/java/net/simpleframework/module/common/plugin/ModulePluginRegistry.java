@@ -3,6 +3,7 @@ package net.simpleframework.module.common.plugin;
 import static net.simpleframework.common.I18n.$m;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +49,8 @@ public abstract class ModulePluginRegistry<T extends IModulePlugin> extends Obje
 
 	public T getPlugin(final int mark) {
 		if (mark == 0) {
-			return allPlugin().iterator().next();
+			final Iterator<T> it = allPlugin().iterator();
+			return it.hasNext() ? it.next() : null;
 		}
 		return ModulePluginFactory.get(registryCache.get(mark));
 	}
