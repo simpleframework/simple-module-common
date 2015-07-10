@@ -73,7 +73,12 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 	public void onInit() throws Exception {
 		super.onInit();
 
-		getTaskExecutor().addScheduledTask(getRecommendPeriod(), new ExecutorRunnable() {
+		getTaskExecutor().addScheduledTask(new ExecutorRunnable() {
+			@Override
+			public long getPeriod() {
+				return getRecommendPeriod();
+			}
+
 			@Override
 			protected void task(final Map<String, Object> cache) throws Exception {
 				doUnRecommendationTask();
