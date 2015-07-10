@@ -4,6 +4,7 @@ import static net.simpleframework.common.I18n.$m;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.EFilterRelation;
@@ -74,7 +75,7 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 
 		getTaskExecutor().addScheduledTask(getRecommendPeriod(), new ExecutorRunnable() {
 			@Override
-			protected void task() throws Exception {
+			protected void task(final Map<String, Object> cache) throws Exception {
 				doUnRecommendationTask();
 			}
 		});
