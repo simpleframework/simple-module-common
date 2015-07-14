@@ -40,8 +40,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(FilterItems.of("contentId", contentId)
-				.addEqual("attachtype", attachtype));
+		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)).addEqual(
+				"attachtype", attachtype));
 	}
 
 	@Override
@@ -49,7 +49,12 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(FilterItems.of("contentId", contentId));
+		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)));
+	}
+
+	@Override
+	public int deleteByContent(final Object contentId) {
+		return deleteWith("contentId=?", getIdParam(contentId));
 	}
 
 	protected IDbEntityManager<AttachmentLob> getLobEntityManager() {

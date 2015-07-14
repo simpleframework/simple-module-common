@@ -29,6 +29,14 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	IDataQuery<T> queryByContent(Object contentId, int attachtype);
 
 	/**
+	 * 根据外键删除
+	 * 
+	 * @param contentId
+	 * @return
+	 */
+	int deleteByContent(Object contentId);
+
+	/**
 	 * 获取lob对象
 	 * 
 	 * @param attachment
