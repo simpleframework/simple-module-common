@@ -213,19 +213,19 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 	public void onInit() throws Exception {
 		super.onInit();
 
-		addListener(new DbEntityAdapterEx() {
+		addListener(new DbEntityAdapterEx<T>() {
 			@Override
-			public void onBeforeDelete(final IDbEntityManager<?> service,
+			public void onBeforeDelete(final IDbEntityManager<T> manager,
 					final IParamsValue paramsValue) throws Exception {
-				super.onBeforeDelete(service, paramsValue);
-				coll(paramsValue); // 删除前缓存
+				super.onBeforeDelete(manager, paramsValue);
+				coll(manager, paramsValue); // 删除前缓存
 			}
 
 			@Override
-			public void onAfterDelete(final IDbEntityManager<?> manager, final IParamsValue paramsValue)
+			public void onAfterDelete(final IDbEntityManager<T> manager, final IParamsValue paramsValue)
 					throws Exception {
 				super.onAfterDelete(manager, paramsValue);
-				for (final Attachment attachment : coll(paramsValue)) {
+				for (final Attachment attachment : coll(manager, paramsValue)) {
 					final String md5 = attachment.getMd5();
 					final AttachmentLob lob = getLob(md5);
 					if (lob != null) {
