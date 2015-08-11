@@ -8,7 +8,7 @@ package net.simpleframework.module.common.bean;
  */
 public interface IViewsBeanAware {
 
-	long getViews();
+	int getViews();
 
-	void setViews(long views);
+	void setViews(int views);
 }

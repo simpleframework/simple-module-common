@@ -36,7 +36,7 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	/* 排序字段 */
 	private int oorder;
 	/* 统计信息-查看次数 */
-	private long views;
+	private int views;
 
 	public EContentStatus getStatus() {
 		return status == null ? EContentStatus.edit : status;
@@ -92,12 +92,12 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	}
 
 	@Override
-	public long getViews() {
+	public int getViews() {
 		return views;
 	}
 
 	@Override
-	public void setViews(final long views) {
+	public void setViews(final int views) {
 		this.views = views;
 	}
 
