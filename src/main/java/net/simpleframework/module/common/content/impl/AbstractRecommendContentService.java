@@ -75,7 +75,7 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 
 		getTaskExecutor().addScheduledTask(new ExecutorRunnable() {
 			@Override
-			public long getPeriod() {
+			public int getPeriod() {
 				return getRecommendPeriod();
 			}
 
