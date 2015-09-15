@@ -57,8 +57,7 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 				cal.add(Calendar.SECOND, dur);
 				if (cal.getTime().before(new Date())) {
 					t.setRecommendation(0);
-					LogDesc.set(t,
-							$m("AbstractContentService.0", Convert.toDateString(rDate), dur));
+					LogDesc.set(t, $m("AbstractContentService.0", Convert.toDateString(rDate), dur));
 					update(new String[] { "recommendation" }, t);
 				}
 			}
