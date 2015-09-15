@@ -12,18 +12,18 @@ import net.simpleframework.common.Convert;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class DescriptionLogUtils {
+public abstract class LogDesc {
 
-	private static final ThreadLocal<Map<String, String>> DESCRIPTION_LOCAL;
+	private static final ThreadLocal<Map<String, String>> DESCs;
 	static {
-		DESCRIPTION_LOCAL = new ThreadLocal<Map<String, String>>();
+		DESCs = new ThreadLocal<Map<String, String>>();
 	}
 
 	public static String get(final Object bean) {
 		if (bean == null) {
 			return null;
 		}
-		final Map<String, String> m = DESCRIPTION_LOCAL.get();
+		final Map<String, String> m = DESCs.get();
 		return m != null ? m.get(key(bean)) : null;
 	}
 
@@ -31,17 +31,17 @@ public abstract class DescriptionLogUtils {
 		if (bean == null) {
 			return;
 		}
-		Map<String, String> m = DESCRIPTION_LOCAL.get();
+		Map<String, String> m = DESCs.get();
 		if (description == null) {
 			if (m != null) {
 				m.remove(key(bean));
 				if (m.size() == 0) {
-					DESCRIPTION_LOCAL.remove();
+					DESCs.remove();
 				}
 			}
 		} else {
 			if (m == null) {
-				DESCRIPTION_LOCAL.set(m = new HashMap<String, String>());
+				DESCs.set(m = new HashMap<String, String>());
 			}
 			m.put(key(bean), description);
 		}
