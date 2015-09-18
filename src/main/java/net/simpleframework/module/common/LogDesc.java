@@ -48,7 +48,7 @@ public abstract class LogDesc {
 	}
 
 	private static String key(final Object bean) {
-		final Object k = bean instanceof IIdBeanAware ? ((IIdBeanAware) bean).getId() : bean;
+		final Object k = bean instanceof IIdBeanAware ? ((IIdBeanAware) bean).getId(true) : bean;
 		return Convert.toString(k);
 	}
 }
