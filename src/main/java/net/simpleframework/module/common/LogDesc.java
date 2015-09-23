@@ -24,7 +24,12 @@ public abstract class LogDesc {
 			return null;
 		}
 		final Map<String, String> m = DESCs.get();
-		return m != null ? m.get(key(bean)) : null;
+		if (m != null) {
+			return m.get(key(bean));
+		} else {
+			final String s = Convert.toString(bean);
+			return s.startsWith(bean.getClass().getName() + "@") ? null : s;
+		}
 	}
 
 	public static void set(final Object bean, final String description) {
