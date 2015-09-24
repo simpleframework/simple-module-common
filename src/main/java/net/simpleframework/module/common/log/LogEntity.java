@@ -1,6 +1,6 @@
 package net.simpleframework.module.common.log;
 
-import net.simpleframework.common.Convert;
+import java.util.HashSet;
 
 /**
  * Licensed under the Apache License, Version 2.0
@@ -9,21 +9,17 @@ import net.simpleframework.common.Convert;
  *         http://www.simpleframework.net
  */
 public abstract class LogEntity {
-
-	private static final ThreadLocal<Boolean> FLAGs;
-	static {
-		FLAGs = new ThreadLocal<Boolean>();
+	public static boolean isDisable(final Object bean) {
+		return hCache.contains(bean);
 	}
 
-	public static boolean isDisable() {
-		return Convert.toBool(FLAGs.get());
+	public static void disable(final Object bean) {
+		hCache.add(bean);
 	}
 
-	public static void disable() {
-		FLAGs.set(Boolean.TRUE);
+	public static void enable(final Object bean) {
+		hCache.remove(bean);
 	}
 
-	public static void enable() {
-		FLAGs.remove();
-	}
+	private static final HashSet<Object> hCache = new HashSet<Object>();
 }
