@@ -1,4 +1,4 @@
-package net.simpleframework.module.common;
+package net.simpleframework.module.common.log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import net.simpleframework.common.Convert;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class LogDesc {
+public abstract class LdescVal {
 
 	private static final ThreadLocal<Map<String, String>> DESCs;
 	static {

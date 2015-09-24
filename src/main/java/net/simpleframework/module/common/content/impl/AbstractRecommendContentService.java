@@ -16,11 +16,11 @@ import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.ArrayUtils;
 import net.simpleframework.ctx.permission.LoginUser;
 import net.simpleframework.ctx.task.ExecutorRunnable;
-import net.simpleframework.module.common.LogDesc;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
 import net.simpleframework.module.common.content.AbstractRecommendContentBean;
 import net.simpleframework.module.common.content.EContentStatus;
 import net.simpleframework.module.common.content.IRecommendContentService;
+import net.simpleframework.module.common.log.LdescVal;
 
 /**
  * Licensed under the Apache License, Version 2.0
@@ -57,7 +57,7 @@ public abstract class AbstractRecommendContentService<T extends AbstractRecommen
 				cal.add(Calendar.SECOND, dur);
 				if (cal.getTime().before(new Date())) {
 					t.setRecommendation(0);
-					LogDesc.set(t, $m("AbstractContentService.0", Convert.toDateString(rDate), dur));
+					LdescVal.set(t, $m("AbstractContentService.0", Convert.toDateString(rDate), dur));
 					update(new String[] { "recommendation" }, t);
 				}
 			}
