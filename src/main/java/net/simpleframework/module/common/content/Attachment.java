@@ -25,8 +25,16 @@ public class Attachment extends AbstractUserAwareBean {
 	private int attachtype;
 	/* 附件大小 */
 	private long attachsize;
+
+	/* 如果视频附件，记录播放时间 */
+	private int videoTime;
+
+	/* 下载地址，可为空 */
+	private String durl;
+
 	/* 文件扩展名 */
 	private String fileExt;
+
 	/* 下载次数 */
 	private int downloads;
 
@@ -63,6 +71,22 @@ public class Attachment extends AbstractUserAwareBean {
 
 	public void setAttachtype(final int attachtype) {
 		this.attachtype = attachtype;
+	}
+
+	public int getVideoTime() {
+		return videoTime;
+	}
+
+	public void setVideoTime(final int videoTime) {
+		this.videoTime = videoTime;
+	}
+
+	public String getDurl() {
+		return durl;
+	}
+
+	public void setDurl(final String durl) {
+		this.durl = durl;
 	}
 
 	public String getFileExt() {

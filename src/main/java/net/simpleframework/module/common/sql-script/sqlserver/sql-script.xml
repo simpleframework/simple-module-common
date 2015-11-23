@@ -8,14 +8,16 @@
       create table sf_attachment (
         id char(32) not null,
         contentid char(32) not null,
+        userid char(32) not null,
+        createdate datetime not null,
         md5 char(32) not null,
        	topic varchar(128) not null,
         attachtype tinyint not null,
-       	fileext varchar(16),
        	attachsize bigint not null,
+        videotime int not null,
+        durl varchar(128),
+        fileext varchar(16),
        	downloads int not null,
-        createdate datetime not null,
-        userid char(32) not null,
        	description varchar(256),
         primary key(id)
       );
