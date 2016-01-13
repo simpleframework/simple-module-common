@@ -20,11 +20,11 @@ public abstract class AbstractCommentService<T extends AbstractComment> extends
 		AbstractDbBeanService<T> implements ICommentService<T> {
 
 	@Override
-	public IDataQuery<T> queryComments(final Object contentId) {
+	public IDataQuery<T> queryComments(final Object contentId, final ColumnData... orderColumns) {
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)));
+		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)), orderColumns);
 	}
 
 	@Override
