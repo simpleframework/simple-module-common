@@ -178,32 +178,36 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		if (attachment == null) {
 			return null;
 		}
-		String filename = getTempdir() + attachment.getMd5();
-		final String ext = attachment.getFileExt();
-		if (StringUtils.hasText(ext)) {
-			filename += "." + ext;
-		}
-		final File oFile = new File(filename);
-		final AttachmentFile af = new AttachmentFile(oFile, attachment.getMd5()) {
+
+		final AttachmentFile af = new AttachmentFile(null, attachment.getMd5()) {
 			@Override
 			public File getAttachment() throws IOException {
 				synchronized (this) {
-					if (!oFile.exists()) {
+					if (file == null) {
+						String filename = getTempdir() + attachment.getMd5();
+						final String ext = attachment.getFileExt();
+						if (StringUtils.hasText(ext)) {
+							filename += "." + ext;
+						}
+						file = new File(filename);
+					}
+					if (!file.exists()) {
 						final AttachmentLob lob = getLob(attachment);
 						InputStream inputStream;
 						if (lob == null || (inputStream = lob.getAttachment()) == null) {
 							throw new IOException($m("AbstractAttachmentService.0"));
 						}
-						FileUtils.copyFile(inputStream, oFile);
+						FileUtils.copyFile(inputStream, file);
 					}
 				}
-				return super.getAttachment();
+				return file;
 			};
 
 			private static final long serialVersionUID = 3689368709808495226L;
 
-		}.setId(attachment.getId().toString()).setSize(attachment.getAttachsize())
-				.setTopic(attachment.getTopic()).setType(attachment.getAttachtype()).setExt(ext)
+		}.setId(attachment.getId().toString()).setDurl(attachment.getDurl())
+				.setSize(attachment.getAttachsize()).setTopic(attachment.getTopic())
+				.setType(attachment.getAttachtype()).setExt(attachment.getFileExt())
 				.setCreateDate(attachment.getCreateDate()).setDownloads(attachment.getDownloads())
 				.setDescription(attachment.getDescription());
 		return af;
