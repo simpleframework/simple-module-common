@@ -15,7 +15,7 @@ public abstract class AbstractCommonModuleContext extends AbstractADOModuleConte
 		ICommonModuleContext {
 
 	@Override
-	public IAttachmentService<Attachment> getAttachmentService() {
+	public IAttachmentService<? extends Attachment> getAttachmentService() {
 		throw NotImplementedException.of(getClass(), "getAttachmentService");
 	}
 }
