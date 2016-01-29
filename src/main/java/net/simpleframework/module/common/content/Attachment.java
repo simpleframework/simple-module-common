@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content;
 
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
+import net.simpleframework.ado.bean.IOrderBeanAware;
 import net.simpleframework.ado.db.common.EntityInterceptor;
 import net.simpleframework.common.ID;
 
@@ -11,7 +12,7 @@ import net.simpleframework.common.ID;
  *         http://www.simpleframework.net
  */
 @EntityInterceptor(listenerTypes = { "net.simpleframework.module.log.EntityDeleteLogAdapter" })
-public class Attachment extends AbstractUserAwareBean {
+public class Attachment extends AbstractUserAwareBean implements IOrderBeanAware {
 	/* 外键，文档id */
 	private ID contentId;
 
@@ -40,6 +41,9 @@ public class Attachment extends AbstractUserAwareBean {
 
 	/* 描述 */
 	private String description;
+
+	/* 排序号 */
+	private int oorder;
 
 	public ID getContentId() {
 		return contentId;
@@ -119,6 +123,16 @@ public class Attachment extends AbstractUserAwareBean {
 
 	public void setDescription(final String description) {
 		this.description = description;
+	}
+
+	@Override
+	public int getOorder() {
+		return oorder;
+	}
+
+	@Override
+	public void setOorder(final int oorder) {
+		this.oorder = oorder;
 	}
 
 	@Override

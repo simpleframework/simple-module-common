@@ -19,6 +19,7 @@
         fileext varchar(16),
        	downloads int not null,
        	description varchar(256),
+        oorder int not null,
         primary key(id)
       );
     ]]>
