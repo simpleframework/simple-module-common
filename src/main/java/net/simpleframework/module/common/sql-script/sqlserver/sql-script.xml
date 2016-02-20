@@ -8,6 +8,7 @@
       create table sf_attachment (
         id char(32) not null,
         contentid char(32) not null,
+        imodule int not null,
         userid char(32) not null,
         createdate datetime not null,
         md5 char(32) not null,

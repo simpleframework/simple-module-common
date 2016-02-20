@@ -16,6 +16,9 @@ public class Attachment extends AbstractUserAwareBean implements IOrderBeanAware
 	/* 外键，文档id */
 	private ID contentId;
 
+	/* 模块标识 */
+	private int imodule;
+
 	/* 摘要值，md5 */
 	private String md5;
 
@@ -51,6 +54,14 @@ public class Attachment extends AbstractUserAwareBean implements IOrderBeanAware
 
 	public void setContentId(final ID contentId) {
 		this.contentId = contentId;
+	}
+
+	public int getImodule() {
+		return imodule;
+	}
+
+	public void setImodule(final int imodule) {
+		this.imodule = imodule;
 	}
 
 	public String getMd5() {
