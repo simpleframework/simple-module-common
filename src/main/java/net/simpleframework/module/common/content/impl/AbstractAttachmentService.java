@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.IParamsValue;
 import net.simpleframework.ado.db.IDbEntityManager;
@@ -42,6 +43,11 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		}
 		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)).addEqual(
 				"attachtype", attachtype));
+	}
+
+	@Override
+	protected ColumnData[] getDefaultOrderColumns() {
+		return ORDER_OORDER;
 	}
 
 	@Override
