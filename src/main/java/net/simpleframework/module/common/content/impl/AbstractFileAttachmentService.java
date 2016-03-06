@@ -39,11 +39,11 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	}
 
 	@Override
-	public AttachmentLob getLob(final String md) throws IOException {
-		final AttachmentLob lob = super.getLob(md);
+	public AttachmentLob getLob(final T attachment) throws IOException {
+		final AttachmentLob lob = super.getLob(attachment);
 		// 数据库依旧保留lob表，需要refs计数
-		final File file = new File(_getHomedir() + md);
-		if (lob != null && file.exists()) {
+		File file;
+		if (lob != null && (file = new File(_getHomedir() + attachment.getMd5())).exists()) {
 			lob.setAttachment(new FileInputStream(file));
 		}
 		return lob;
@@ -59,9 +59,9 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	}
 
 	@Override
-	protected void deleteAttachment(final String md) throws IOException {
-		super.deleteAttachment(md);
-		new File(_getHomedir() + md).delete();
+	protected void deleteAttachment(final T attachment) throws IOException {
+		super.deleteAttachment(attachment);
+		new File(_getHomedir() + attachment.getMd5()).delete();
 	}
 
 	@Override

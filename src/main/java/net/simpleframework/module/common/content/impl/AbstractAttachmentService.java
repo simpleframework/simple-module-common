@@ -146,8 +146,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		}
 	}
 
-	protected void deleteAttachment(final String md) throws IOException {
-		getLobEntityManager().delete(new ExpressionValue("md=?", md));
+	protected void deleteAttachment(final T attachment) throws IOException {
+		getLobEntityManager().delete(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
 	protected void updateRefs(final AttachmentLob lob, final int refs) throws IOException {
@@ -235,13 +235,12 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			public void onAfterDelete(final IDbEntityManager<T> manager, final IParamsValue paramsValue)
 					throws Exception {
 				super.onAfterDelete(manager, paramsValue);
-				for (final Attachment attachment : coll(manager, paramsValue)) {
-					final String md5 = attachment.getMd5();
-					final AttachmentLob lob = getLob(md5);
+				for (final T attachment : coll(manager, paramsValue)) {
+					final AttachmentLob lob = getLob(attachment);
 					if (lob != null) {
 						final int refs = lob.getRefs();
-						if (refs == 0 && count("md5=?", md5) == 0) {
-							deleteAttachment(md5);
+						if (refs == 0 && count("md5=?", attachment.getMd5()) == 0) {
+							deleteAttachment(attachment);
 						} else {
 							updateRefs(lob, refs - 1);
 						}
