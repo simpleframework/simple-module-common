@@ -114,8 +114,11 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 			// lob
 			AttachmentLob lob;
 			if ((lob = getLob(attachment)) == null) {
-				insertAttachment(af);
+				insertAttachmentLob(af);
 			} else {
+				if (lob.getAttachment() == null) {
+					putAttachmentLob(lob, af);
+				}
 				updateRefs(lob, lob.getRefs() + 1);
 			}
 		}
@@ -131,7 +134,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", md));
 	}
 
-	protected void insertAttachment(final AttachmentFile af) throws IOException {
+	protected void insertAttachmentLob(final AttachmentFile af) throws IOException {
 		final AttachmentLob lob = createLob();
 		lob.setMd(af.getMd5());
 		putAttachmentLob(lob, af);
@@ -146,7 +149,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		}
 	}
 
-	protected void deleteAttachment(final T attachment) throws IOException {
+	protected void deleteAttachmentLob(final T attachment) throws IOException {
 		getLobEntityManager().delete(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
@@ -156,7 +159,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 	}
 
 	@Override
-	public void updateAttachment(final T attachment, final InputStream iStream) throws IOException {
+	public void updateAttachmentLob(final T attachment, final InputStream iStream)
+			throws IOException {
 		// 更新附件内容
 		final AttachmentLob lob = getLob(attachment);
 		if (lob != null) {
@@ -239,8 +243,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 					final AttachmentLob lob = getLob(attachment);
 					if (lob != null) {
 						final int refs = lob.getRefs();
-						if (refs == 0 && count("md5=?", attachment.getMd5()) == 0) {
-							deleteAttachment(attachment);
+						if (refs <= 0) {
+							deleteAttachmentLob(attachment);
 						} else {
 							updateRefs(lob, refs - 1);
 						}

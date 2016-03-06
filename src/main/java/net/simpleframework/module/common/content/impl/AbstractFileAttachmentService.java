@@ -59,13 +59,14 @@ public abstract class AbstractFileAttachmentService<T extends Attachment> extend
 	}
 
 	@Override
-	protected void deleteAttachment(final T attachment) throws IOException {
-		super.deleteAttachment(attachment);
+	protected void deleteAttachmentLob(final T attachment) throws IOException {
+		super.deleteAttachmentLob(attachment);
 		new File(_getHomedir() + attachment.getMd5()).delete();
 	}
 
 	@Override
-	public void updateAttachment(final T attachment, final InputStream iStream) throws IOException {
+	public void updateAttachmentLob(final T attachment, final InputStream iStream)
+			throws IOException {
 		// 直接更新内容
 		FileUtils.copyFile(iStream, new File(_getHomedir() + attachment.getMd5()));
 	}
