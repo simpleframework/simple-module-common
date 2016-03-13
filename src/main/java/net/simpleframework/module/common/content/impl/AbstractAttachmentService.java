@@ -109,6 +109,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 					BeanUtils.setProperty(attachment, p.getKey(), p.getValue());
 				}
 			}
+
+			attachment.setAttr("_AttachmentFile", af);
 			getEntityManager().insert(attachment);
 
 			// lob
