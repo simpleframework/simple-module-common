@@ -1,4 +1,4 @@
-package net.simpleframework.module.common.bean;
+package net.simpleframework.module.common.content;
 
 import static net.simpleframework.common.I18n.$m;
 

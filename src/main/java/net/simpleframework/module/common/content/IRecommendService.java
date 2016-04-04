@@ -1,8 +1,6 @@
 package net.simpleframework.module.common.content;
 
-import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.query.IDataQuery;
-import net.simpleframework.ctx.service.ado.IUserBeanServiceAware;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
 
 /**
@@ -12,14 +10,22 @@ import net.simpleframework.ctx.service.ado.db.IDbBeanService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public interface ICommentService<T extends AbstractComment> extends IDbBeanService<T>,
-		IUserBeanServiceAware<T> {
+public interface IRecommendService<T extends AbstractRecommend> extends IDbBeanService<T> {
 
 	/**
-	 * 获取文档的评论列表，parentId=null
-	 * 
 	 * @param content
+	 * 
 	 * @return
 	 */
-	IDataQuery<T> queryComments(Object contentId, ColumnData... orderColumns);
+	IDataQuery<T> queryRecommends(Object content);
+
+	/**
+	 * 获取正在运行的推荐
+	 * 
+	 * @param news
+	 * @return
+	 */
+	T queryRunningRecommend(Object content);
+
+	void doAbort(T recommend);
 }
