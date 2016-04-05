@@ -63,7 +63,7 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		return deleteWith("contentId=?", getIdParam(contentId));
 	}
 
-	protected IDbEntityManager<AttachmentLob> getLobEntityManager() {
+	protected IDbEntityManager<? extends AttachmentLob> getLobEntityManager() {
 		return getEntityManager(AttachmentLob.class);
 	}
 
@@ -136,11 +136,12 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		return getLobEntityManager().queryForBean(new ExpressionValue("md=?", md));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void insertAttachmentLob(final AttachmentFile af) throws IOException {
 		final AttachmentLob lob = createLob();
 		lob.setMd(af.getMd5());
 		putAttachmentLob(lob, af);
-		getLobEntityManager().insert(lob);
+		((IDbEntityManager<AttachmentLob>) getLobEntityManager()).insert(lob);
 	}
 
 	protected void putAttachmentLob(final AttachmentLob lob, final AttachmentFile af)
@@ -155,11 +156,14 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		getLobEntityManager().delete(new ExpressionValue("md=?", attachment.getMd5()));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void updateRefs(final AttachmentLob lob, final int refs) throws IOException {
 		lob.setRefs(Math.max(refs, 0));
-		getLobEntityManager().update(new String[] { "refs" }, lob);
+		((IDbEntityManager<AttachmentLob>) getLobEntityManager())
+				.update(new String[] { "refs" }, lob);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateAttachmentLob(final T attachment, final InputStream iStream)
 			throws IOException {
@@ -167,7 +171,8 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		final AttachmentLob lob = getLob(attachment);
 		if (lob != null) {
 			lob.setAttachment(iStream);
-			getLobEntityManager().update(new String[] { "attachment" }, lob);
+			((IDbEntityManager<AttachmentLob>) getLobEntityManager()).update(
+					new String[] { "attachment" }, lob);
 		}
 	}
 
