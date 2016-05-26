@@ -44,11 +44,5 @@ public enum EContentStatus {
 		public String toString() {
 			return $m("EContentStatus.delete");
 		}
-	},
-	temp {
-		@Override
-		public String toString() {
-			return $m("EContentStatus.temp");
-		}
 	}
 }
