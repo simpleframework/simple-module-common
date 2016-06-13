@@ -81,5 +81,13 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 */
 	AttachmentFile createAttachmentFile(T attachment) throws IOException;
 
+	/**
+	 * 获取用户的所有附件大小
+	 * 
+	 * @param user
+	 * @return
+	 */
+	long getAttachsize(Object user);
+
 	String getTempdir();
 }

@@ -176,6 +176,11 @@ public abstract class AbstractAttachmentService<T extends Attachment> extends
 		}
 	}
 
+	@Override
+	public long getAttachsize(final Object user) {
+		return sum("attachsize", "userid=?", getIdParam(user)).longValue();
+	}
+
 	private String tmpdir;
 
 	@Override
