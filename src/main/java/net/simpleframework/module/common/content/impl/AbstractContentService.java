@@ -7,7 +7,7 @@ import net.simpleframework.common.TimePeriod;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.AbstractCategoryBean;
 import net.simpleframework.module.common.content.AbstractContentBean;
-import net.simpleframework.module.common.content.EContentStatus;
+import net.simpleframework.module.common.content.AbstractContentBean.EContentStatus;
 import net.simpleframework.module.common.content.IContentService;
 
 /**

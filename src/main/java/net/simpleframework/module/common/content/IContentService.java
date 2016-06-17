@@ -6,6 +6,7 @@ import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.TimePeriod;
 import net.simpleframework.ctx.service.ado.IUserBeanServiceAware;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
+import net.simpleframework.module.common.content.AbstractContentBean.EContentStatus;
 
 /**
  * Licensed under the Apache License, Version 2.0

@@ -1,5 +1,6 @@
 package net.simpleframework.module.common.content;
 
+import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.ado.bean.AbstractTextDescriptionBean;
 import net.simpleframework.ado.bean.IOrderBeanAware;
 import net.simpleframework.ado.bean.ITreeBeanAware;
@@ -38,5 +39,27 @@ public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean i
 	@Override
 	public void setOorder(final int oorder) {
 		this.oorder = oorder;
+	}
+
+	public static enum ECategoryMark {
+		/**
+		 * 正常标识
+		 */
+		normal {
+			@Override
+			public String toString() {
+				return $m("ECategoryMark.normal");
+			}
+		},
+
+		/**
+		 * 内置类目标识
+		 */
+		builtIn {
+			@Override
+			public String toString() {
+				return $m("ECategoryMark.builtIn");
+			}
+		}
 	}
 }

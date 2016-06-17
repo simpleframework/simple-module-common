@@ -1,5 +1,6 @@
 package net.simpleframework.module.common.content;
 
+import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.ado.ColumnMeta;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.ado.bean.IDescriptionBeanAware;
@@ -120,4 +121,66 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean implemen
 	public static int CONTENT_MARK_ATTACH = 2; // 含有附件 10
 	public static int CONTENT_MARK_CODE = 4; // 含有代码 100
 	public static int CONTENT_MARK_VOTE = 8; // 含有代码 1000
+
+	public static enum EContentStatus {
+		edit {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.edit");
+			}
+		},
+		audit {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.audit");
+			}
+		},
+		publish {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.publish");
+			}
+		},
+		closed {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.closed");
+			}
+		},
+		lock {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.lock");
+			}
+		},
+		delete {
+			@Override
+			public String toString() {
+				return $m("EContentStatus.delete");
+			}
+		}
+	}
+
+	public static enum EAuditStatus {
+		none {
+			@Override
+			public String toString() {
+				return $m("EAuditStatus.none");
+			}
+		},
+
+		success {
+			@Override
+			public String toString() {
+				return $m("EAuditStatus.success");
+			}
+		},
+
+		fail {
+			@Override
+			public String toString() {
+				return $m("EAuditStatus.fail");
+			}
+		}
+	}
 }
