@@ -71,11 +71,21 @@ public abstract class AbstractRecommend extends AbstractDateAwareBean {
 			public String toString() {
 				return $m("ERecommendStatus.ready");
 			}
+
+			@Override
+			public String getColor() {
+				return "666";
+			}
 		},
 		running {
 			@Override
 			public String toString() {
 				return $m("ERecommendStatus.running");
+			}
+
+			@Override
+			public String getColor() {
+				return "green";
 			}
 		},
 		complete {
@@ -83,12 +93,24 @@ public abstract class AbstractRecommend extends AbstractDateAwareBean {
 			public String toString() {
 				return $m("ERecommendStatus.complete");
 			}
+
+			@Override
+			public String getColor() {
+				return "444";
+			}
 		},
 		abort {
 			@Override
 			public String toString() {
 				return $m("ERecommendStatus.abort");
 			}
-		}
+
+			@Override
+			public String getColor() {
+				return "red";
+			}
+		};
+
+		public abstract String getColor();
 	}
 }
