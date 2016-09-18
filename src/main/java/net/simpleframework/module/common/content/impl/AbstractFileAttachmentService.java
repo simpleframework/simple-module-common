@@ -17,8 +17,8 @@ import net.simpleframework.module.common.content.AttachmentLob;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractFileAttachmentService<T extends Attachment> extends
-		AbstractAttachmentService<T> {
+public abstract class AbstractFileAttachmentService<T extends Attachment>
+		extends AbstractAttachmentService<T> {
 
 	private String homedir = "c:/attachments";
 

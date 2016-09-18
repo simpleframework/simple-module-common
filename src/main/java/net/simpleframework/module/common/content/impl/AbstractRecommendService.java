@@ -24,8 +24,8 @@ import net.simpleframework.module.common.content.IRecommendService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractRecommendService<T extends AbstractRecommend> extends
-		AbstractDbBeanService<T> implements IRecommendService<T> {
+public abstract class AbstractRecommendService<T extends AbstractRecommend>
+		extends AbstractDbBeanService<T> implements IRecommendService<T> {
 
 	protected abstract Object getContent(T t);
 
@@ -72,18 +72,18 @@ public abstract class AbstractRecommendService<T extends AbstractRecommend> exte
 		super.onInit();
 
 		final ITaskExecutor taskExecutor = getTaskExecutor();
-		taskExecutor.addScheduledTask(new ExecutorRunnableEx(getBeanClass().getSimpleName()
-				.toLowerCase() + "_check") {
-			@Override
-			protected void task(final Map<String, Object> cache) throws Exception {
-				final IDataQuery<T> dq = query("status=? or status=?", ERecommendStatus.ready,
-						ERecommendStatus.running).setFetchSize(0);
-				T r;
-				while ((r = dq.next()) != null) {
-					doRecommend_inTran(r);
-				}
-			}
-		});
+		taskExecutor.addScheduledTask(
+				new ExecutorRunnableEx(getBeanClass().getSimpleName().toLowerCase() + "_check") {
+					@Override
+					protected void task(final Map<String, Object> cache) throws Exception {
+						final IDataQuery<T> dq = query("status=? or status=?", ERecommendStatus.ready,
+								ERecommendStatus.running).setFetchSize(0);
+						T r;
+						while ((r = dq.next()) != null) {
+							doRecommend_inTran(r);
+						}
+					}
+				});
 
 		addListener(new DbEntityAdapterEx<T>() {
 			@Override

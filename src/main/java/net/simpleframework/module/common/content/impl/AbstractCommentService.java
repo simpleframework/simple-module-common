@@ -17,8 +17,8 @@ import net.simpleframework.module.common.content.ICommentService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractCommentService<T extends AbstractComment> extends
-		AbstractDbBeanService<T> implements ICommentService<T> {
+public abstract class AbstractCommentService<T extends AbstractComment>
+		extends AbstractDbBeanService<T> implements ICommentService<T> {
 
 	@Override
 	public IDataQuery<T> queryComments(final Object contentId, final ColumnData... orderColumns) {

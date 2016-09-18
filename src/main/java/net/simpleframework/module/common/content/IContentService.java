@@ -15,8 +15,8 @@ import net.simpleframework.module.common.content.AbstractContentBean.EContentSta
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public interface IContentService<T extends AbstractContentBean> extends IDbBeanService<T>,
-		IUserBeanServiceAware<T> {
+public interface IContentService<T extends AbstractContentBean>
+		extends IDbBeanService<T>, IUserBeanServiceAware<T> {
 
 	/**
 	 * 按指定条件查找

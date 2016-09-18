@@ -12,8 +12,8 @@ import net.simpleframework.module.common.content.IAttachmentService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractCommonModuleContext extends AbstractADOModuleContext implements
-		ICommonModuleContext {
+public abstract class AbstractCommonModuleContext extends AbstractADOModuleContext
+		implements ICommonModuleContext {
 
 	@Override
 	public IAttachmentService<? extends Attachment> getAttachmentService() {

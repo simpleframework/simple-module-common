@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content;
 
 import static net.simpleframework.common.I18n.$m;
+
 import net.simpleframework.ado.bean.AbstractTextDescriptionBean;
 import net.simpleframework.ado.bean.IOrderBeanAware;
 import net.simpleframework.ado.bean.ITreeBeanAware;
@@ -13,8 +14,8 @@ import net.simpleframework.common.ID;
  *         http://www.simpleframework.net
  */
 @SuppressWarnings("serial")
-public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean implements
-		ITreeBeanAware, IOrderBeanAware {
+public abstract class AbstractCategoryBean extends AbstractTextDescriptionBean
+		implements ITreeBeanAware, IOrderBeanAware {
 	/* 父id */
 	private ID parentId;
 

@@ -17,23 +17,24 @@ import net.simpleframework.module.common.content.IContentService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractContentService<T extends AbstractContentBean> extends
-		AbstractDbBeanService<T> implements IContentService<T> {
+public abstract class AbstractContentService<T extends AbstractContentBean>
+		extends AbstractDbBeanService<T> implements IContentService<T> {
 
 	@Override
-	public IDataQuery<T> queryBeans(final AbstractCategoryBean category,
-			final EContentStatus status, final TimePeriod timePeriod, final FilterItems filterItems) {
+	public IDataQuery<T> queryBeans(final AbstractCategoryBean category, final EContentStatus status,
+			final TimePeriod timePeriod, final FilterItems filterItems) {
 		return queryBeans(category, status, timePeriod, filterItems, getDefaultOrderColumns());
 	}
 
 	@Override
-	public IDataQuery<T> queryBeans(final AbstractCategoryBean oCategory, final EContentStatus status) {
+	public IDataQuery<T> queryBeans(final AbstractCategoryBean oCategory,
+			final EContentStatus status) {
 		return queryBeans(oCategory, status, null, null);
 	}
 
 	@Override
-	public IDataQuery<T> queryBeans(final AbstractCategoryBean category,
-			final TimePeriod timePeriod, final ColumnData... orderColumns) {
+	public IDataQuery<T> queryBeans(final AbstractCategoryBean category, final TimePeriod timePeriod,
+			final ColumnData... orderColumns) {
 		return queryBeans(category, EContentStatus.publish, timePeriod, null, orderColumns);
 	}
 

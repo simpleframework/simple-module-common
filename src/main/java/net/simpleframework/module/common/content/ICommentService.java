@@ -12,8 +12,8 @@ import net.simpleframework.ctx.service.ado.db.IDbBeanService;
  *         https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public interface ICommentService<T extends AbstractComment> extends IDbBeanService<T>,
-		IUserBeanServiceAware<T> {
+public interface ICommentService<T extends AbstractComment>
+		extends IDbBeanService<T>, IUserBeanServiceAware<T> {
 
 	/**
 	 * 获取文档的评论列表，parentId=null

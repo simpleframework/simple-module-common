@@ -1,6 +1,7 @@
 package net.simpleframework.module.common.content;
 
 import static net.simpleframework.common.I18n.$m;
+
 import net.simpleframework.ado.ColumnMeta;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.ado.bean.IDescriptionBeanAware;
@@ -16,8 +17,8 @@ import net.simpleframework.module.common.bean.IViewsBeanAware;
  *         http://www.simpleframework.net
  */
 @SuppressWarnings("serial")
-public abstract class AbstractContentBean extends AbstractUserAwareBean implements
-		IDescriptionBeanAware, IOrderBeanAware, IViewsBeanAware {
+public abstract class AbstractContentBean extends AbstractUserAwareBean
+		implements IDescriptionBeanAware, IOrderBeanAware, IViewsBeanAware {
 	/* 状态 */
 	@ColumnMeta(columnText = "#(AbstractContentBean.0)")
 	private EContentStatus status;
