@@ -9,6 +9,7 @@ import net.simpleframework.ado.IParamsValue;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.ado.trans.TransactionVoidCallback;
+import net.simpleframework.common.th.NotImplementedException;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.ctx.task.ExecutorRunnableEx;
 import net.simpleframework.ctx.task.ITaskExecutor;
@@ -30,6 +31,11 @@ public abstract class AbstractRecommendService<T extends AbstractRecommend>
 	protected abstract Object getContent(T t);
 
 	protected abstract void _doStatus(T r, ERecommendStatus status);
+
+	@Override
+	public IDataQuery<T> queryRunningRecommends() {
+		throw NotImplementedException.of(getClass(), "queryRunningRecommends");
+	}
 
 	@Override
 	public void doAbort(final T recommend) {

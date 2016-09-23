@@ -20,6 +20,13 @@ public interface IRecommendService<T extends AbstractRecommend> extends IDbBeanS
 	IDataQuery<T> queryRecommends(Object content);
 
 	/**
+	 * 获取所有正在运行的推荐
+	 * 
+	 * @return
+	 */
+	IDataQuery<T> queryRunningRecommends();
+
+	/**
 	 * 获取正在运行的推荐
 	 * 
 	 * @param news
