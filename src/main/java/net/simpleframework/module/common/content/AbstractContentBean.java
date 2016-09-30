@@ -6,6 +6,7 @@ import net.simpleframework.ado.ColumnMeta;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.ado.bean.IDescriptionBeanAware;
 import net.simpleframework.ado.bean.IOrderBeanAware;
+import net.simpleframework.common.StringUtils;
 import net.simpleframework.common.web.html.HtmlUtils;
 import net.simpleframework.lib.org.jsoup.nodes.Document;
 import net.simpleframework.module.common.bean.IViewsBeanAware;
@@ -110,10 +111,14 @@ public abstract class AbstractContentBean extends AbstractUserAwareBean
 
 	@ColumnMeta(ignore = true)
 	public Document doc() {
+		final String content = getContent();
+		if (!StringUtils.hasText(content)) {
+			return null;
+		}
 		return getAttrCache("_doc", new CacheV<Document>() {
 			@Override
 			public Document get() {
-				return HtmlUtils.createHtmlDocument(getContent());
+				return HtmlUtils.createHtmlDocument(content);
 			}
 		});
 	}
