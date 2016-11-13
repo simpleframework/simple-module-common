@@ -32,16 +32,16 @@ import net.simpleframework.module.common.content.IAttachmentService;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public abstract class AbstractAttachmentService<T extends Attachment>
-		extends AbstractDbBeanService<T> implements IAttachmentService<T> {
+public abstract class AbstractAttachmentService<T extends Attachment> extends
+		AbstractDbBeanService<T> implements IAttachmentService<T> {
 
 	@Override
 	public IDataQuery<T> queryByContent(final Object contentId, final int attachtype) {
 		if (contentId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(
-				FilterItems.of("contentId", getIdParam(contentId)).addEqual("attachtype", attachtype));
+		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)).addEqual(
+				"attachtype", attachtype));
 	}
 
 	@Override
@@ -153,8 +153,8 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 	@SuppressWarnings("unchecked")
 	protected void updateRefs(final AttachmentLob lob, final int refs) throws IOException {
 		lob.setRefs(Math.max(refs, 0));
-		((IDbEntityManager<AttachmentLob>) getLobEntityManager()).update(new String[] { "refs" },
-				lob);
+		((IDbEntityManager<AttachmentLob>) getLobEntityManager())
+				.update(new String[] { "refs" }, lob);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -165,8 +165,8 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		final AttachmentLob lob = getLob(attachment);
 		if (lob != null) {
 			lob.setAttachment(iStream);
-			((IDbEntityManager<AttachmentLob>) getLobEntityManager())
-					.update(new String[] { "attachment" }, lob);
+			((IDbEntityManager<AttachmentLob>) getLobEntityManager()).update(
+					new String[] { "attachment" }, lob);
 		}
 	}
 
@@ -180,11 +180,7 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 	@Override
 	public String getTempdir() {
 		if (tmpdir == null) {
-			final StringBuilder sb = new StringBuilder();
-			final String fs = File.separator;
-			sb.append(getModuleContext().getContextSettings().getTmpFiledir().getAbsolutePath());
-			sb.append(fs).append("attach").append(fs);
-			tmpdir = sb.toString();
+			tmpdir = getModuleContext().getContextSettings().getHomeFile("/attach/").getAbsolutePath();
 		}
 		return tmpdir;
 	}
@@ -242,8 +238,8 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			}
 
 			@Override
-			public void onAfterDelete(final IDbEntityManager<T> manager,
-					final IParamsValue paramsValue) throws Exception {
+			public void onAfterDelete(final IDbEntityManager<T> manager, final IParamsValue paramsValue)
+					throws Exception {
 				super.onAfterDelete(manager, paramsValue);
 				for (final T attachment : coll(manager, paramsValue)) {
 					final AttachmentLob lob = getLob(attachment);
