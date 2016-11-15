@@ -88,6 +88,4 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 * @return
 	 */
 	long getAttachsize(Object user);
-
-	String getTempdir();
 }

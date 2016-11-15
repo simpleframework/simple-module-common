@@ -176,16 +176,17 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		return sum("attachsize", "userid=?", getIdParam(user)).longValue();
 	}
 
-	private String tmpdir;
-
-	@Override
-	public String getTempdir() {
-		if (tmpdir == null) {
-			tmpdir = getModuleContext().getContextSettings().getHomeFile("/attach/").getAbsolutePath()
-					+ File.separator;
-		}
-		return tmpdir;
-	}
+	// private String tmpdir;
+	//
+	// @Override
+	// public String getTempdir() {
+	// if (tmpdir == null) {
+	// tmpdir =
+	// getModuleContext().getContextSettings().getHomeFile("/attach/").getAbsolutePath()
+	// + File.separator;
+	// }
+	// return tmpdir;
+	// }
 
 	@Override
 	public AttachmentFile createAttachmentFile(final T attachment) throws IOException {
@@ -198,12 +199,12 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			public File getAttachment() throws IOException {
 				synchronized (this) {
 					if (file == null) {
-						String filename = getTempdir() + attachment.getMd5();
+						String filename = attachment.getMd5();
 						final String ext = attachment.getFileExt();
 						if (StringUtils.hasText(ext)) {
 							filename += "." + ext;
 						}
-						file = new File(filename);
+						file = getApplicationContext().getContextSettings().getAttachDir(filename);
 					}
 					if (!file.exists()) {
 						final AttachmentLob lob = getLob(attachment);
