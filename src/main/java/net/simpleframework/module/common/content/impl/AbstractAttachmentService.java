@@ -109,14 +109,31 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			getEntityManager().insert(attachment);
 
 			// lob
-			AttachmentLob lob;
-			if ((lob = getLob(attachment)) == null) {
-				insertAttachmentLob(af);
+			doInsertLob(attachment);
+		}
+	}
+
+	protected void doInsertLob(final T attachment) throws IOException {
+		final AttachmentFile af = (AttachmentFile) attachment.getAttr("_AttachmentFile");
+		AttachmentLob lob;
+		if ((lob = getLob(attachment)) == null) {
+			insertAttachmentLob(af);
+		} else {
+			if (lob.getAttachment() == null) {
+				putAttachmentLob(lob, af);
+			}
+			updateRefs(lob, lob.getRefs() + 1);
+		}
+	}
+
+	protected void doDeleteLob(final T attachment) throws IOException {
+		final AttachmentLob lob = getLob(attachment);
+		if (lob != null) {
+			final int refs = lob.getRefs();
+			if (refs <= 0) {
+				deleteAttachmentLob(attachment);
 			} else {
-				if (lob.getAttachment() == null) {
-					putAttachmentLob(lob, af);
-				}
-				updateRefs(lob, lob.getRefs() + 1);
+				updateRefs(lob, refs - 1);
 			}
 		}
 	}
@@ -176,18 +193,6 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		return sum("attachsize", "userid=?", getIdParam(user)).longValue();
 	}
 
-	// private String tmpdir;
-	//
-	// @Override
-	// public String getTempdir() {
-	// if (tmpdir == null) {
-	// tmpdir =
-	// getModuleContext().getContextSettings().getHomeFile("/attach/").getAbsolutePath()
-	// + File.separator;
-	// }
-	// return tmpdir;
-	// }
-
 	@Override
 	public AttachmentFile createAttachmentFile(final T attachment) throws IOException {
 		if (attachment == null) {
@@ -245,15 +250,7 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 					final IParamsValue paramsValue) throws Exception {
 				super.onAfterDelete(manager, paramsValue);
 				for (final T attachment : coll(manager, paramsValue)) {
-					final AttachmentLob lob = getLob(attachment);
-					if (lob != null) {
-						final int refs = lob.getRefs();
-						if (refs <= 0) {
-							deleteAttachmentLob(attachment);
-						} else {
-							updateRefs(lob, refs - 1);
-						}
-					}
+					doDeleteLob(attachment);
 				}
 			}
 		});
