@@ -67,6 +67,19 @@ public abstract class AbstractCommentService<T extends AbstractComment>
 		});
 	}
 
+	protected void onBeforeCommentDelete(final T comment) {
+		if (comment instanceof ITreeBeanAware) {
+			if (count("parentid=?", comment.getId()) > 0) {
+				throw ContentException.of($m("AbstractCommentService.0"));
+			}
+		}
+		if (ObjectUtils.objectEquals(getLoginId(), comment.getUserId())) {
+			if (DateUtils.isExceed(comment.getCreateDate(), 60)) {
+				throw ContentException.of($m("AbstractCommentService.1"));
+			}
+		}
+	}
+
 	@Override
 	public void onInit() throws Exception {
 		super.onInit();
@@ -77,16 +90,7 @@ public abstract class AbstractCommentService<T extends AbstractComment>
 					final IParamsValue paramsValue) throws Exception {
 				super.onBeforeDelete(manager, paramsValue);
 				for (final T comment : coll(manager, paramsValue)) {
-					if (comment instanceof ITreeBeanAware) {
-						if (count("parentid=?", comment.getId()) > 0) {
-							throw ContentException.of($m("AbstractCommentService.0"));
-						}
-					}
-					if (ObjectUtils.objectEquals(getLoginId(), comment.getUserId())) {
-						if (DateUtils.isExceed(comment.getCreateDate(), 60)) {
-							throw ContentException.of($m("AbstractCommentService.1"));
-						}
-					}
+					onBeforeCommentDelete(comment);
 				}
 			}
 		});
