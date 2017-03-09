@@ -1,13 +1,19 @@
 package net.simpleframework.module.common.content.impl;
 
+import static net.simpleframework.common.I18n.$m;
+
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.IParamsValue;
+import net.simpleframework.ado.bean.ITreeBeanAware;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
+import net.simpleframework.common.DateUtils;
+import net.simpleframework.common.object.ObjectUtils;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.AbstractComment;
+import net.simpleframework.module.common.content.ContentException;
 import net.simpleframework.module.common.content.ICommentService;
 
 /**
@@ -56,6 +62,31 @@ public abstract class AbstractCommentService<T extends AbstractComment>
 				super.onAfterInsert(manager, beans);
 				for (final T o : beans) {
 					updateComments(o, 0);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onInit() throws Exception {
+		super.onInit();
+
+		addListener(new DbEntityAdapterEx<T>() {
+			@Override
+			public void onBeforeDelete(final IDbEntityManager<T> manager,
+					final IParamsValue paramsValue) throws Exception {
+				super.onBeforeDelete(manager, paramsValue);
+				for (final T comment : coll(manager, paramsValue)) {
+					if (comment instanceof ITreeBeanAware) {
+						if (count("parentid=?", comment.getId()) > 0) {
+							throw ContentException.of($m("AbstractCommentService.0"));
+						}
+					}
+					if (ObjectUtils.objectEquals(getLoginId(), comment.getUserId())) {
+						if (DateUtils.isExceed(comment.getCreateDate(), 60)) {
+							throw ContentException.of($m("AbstractCommentService.1"));
+						}
+					}
 				}
 			}
 		});
