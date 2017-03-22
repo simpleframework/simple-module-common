@@ -2,6 +2,7 @@ package net.simpleframework.module.common.content;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Date;
 
 import net.simpleframework.ado.bean.IAttachmentLobAware;
 import net.simpleframework.ado.db.common.EntityInterceptor;
@@ -24,6 +25,9 @@ public class AttachmentLob implements IAttachmentLobAware, Serializable {
 
 	/* 附件 */
 	private InputStream attachment;
+
+	/* 创建日期 */
+	private Date createDate;
 
 	@Override
 	public String getMd() {
@@ -49,6 +53,17 @@ public class AttachmentLob implements IAttachmentLobAware, Serializable {
 
 	public void setAttachment(final InputStream attachment) {
 		this.attachment = attachment;
+	}
+
+	public Date getCreateDate() {
+		if (createDate == null) {
+			createDate = new Date();
+		}
+		return createDate;
+	}
+
+	public void setCreateDate(final Date createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override
