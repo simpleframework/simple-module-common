@@ -1,9 +1,12 @@
 package net.simpleframework.module.common.content.impl;
 
+import java.util.Date;
+
 import net.simpleframework.ado.IParamsValue;
 import net.simpleframework.ado.bean.AbstractIdBean;
 import net.simpleframework.ado.bean.AbstractUserAwareBean;
 import net.simpleframework.ado.db.IDbEntityManager;
+import net.simpleframework.common.ID;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.ILikeService;
 
@@ -18,6 +21,25 @@ public abstract class AbstractLikeService<T extends AbstractIdBean, M extends Ab
 		extends AbstractDbBeanService<M> implements ILikeService<T, M> {
 
 	protected abstract void updateStats(final M m, final Number i);
+
+	@Override
+	public M getLike(final T comment, final Object user) {
+		return comment == null ? null
+				: getBean("commentid=? and userid=?", comment.getId(), getIdParam(user));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public M addLike(final T comment, final ID userId) {
+		final M like = createBean();
+		like.setUserId(userId);
+		like.setCreateDate(new Date());
+		setLike(like, comment);
+		insert(like);
+		return like;
+	}
+
+	protected abstract void setLike(final M like, final T comment);
 
 	@Override
 	public void onInit() throws Exception {
