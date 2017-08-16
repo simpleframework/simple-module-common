@@ -2,6 +2,7 @@ package net.simpleframework.module.common.content;
 
 import net.simpleframework.ado.ColumnData;
 import net.simpleframework.ado.query.IDataQuery;
+import net.simpleframework.common.ID;
 import net.simpleframework.ctx.service.ado.IUserBeanServiceAware;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
 
@@ -21,5 +22,7 @@ public interface ICommentService<T extends AbstractComment>
 	 * @param content
 	 * @return
 	 */
+	IDataQuery<T> queryComments(Object contentId, ID userId, ColumnData... orderColumns);
+
 	IDataQuery<T> queryComments(Object contentId, ColumnData... orderColumns);
 }

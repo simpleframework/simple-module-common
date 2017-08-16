@@ -10,6 +10,7 @@ import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.DateUtils;
+import net.simpleframework.common.ID;
 import net.simpleframework.common.object.ObjectUtils;
 import net.simpleframework.ctx.service.ado.db.AbstractDbBeanService;
 import net.simpleframework.module.common.content.AbstractComment;
@@ -27,11 +28,24 @@ public abstract class AbstractCommentService<T extends AbstractComment>
 		extends AbstractDbBeanService<T> implements ICommentService<T> {
 
 	@Override
-	public IDataQuery<T> queryComments(final Object contentId, final ColumnData... orderColumns) {
-		if (contentId == null) {
+	public IDataQuery<T> queryComments(final Object contentId, final ID userId,
+			final ColumnData... orderColumns) {
+		if (contentId == null && userId == null) {
 			return DataQueryUtils.nullQuery();
 		}
-		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)), orderColumns);
+		final FilterItems items = FilterItems.of();
+		if (contentId != null) {
+			items.addEqual("contentId", getIdParam(contentId));
+		}
+		if (userId != null) {
+			items.addEqual("userId", userId);
+		}
+		return queryByParams(items, orderColumns);
+	}
+
+	@Override
+	public IDataQuery<T> queryComments(final Object contentId, final ColumnData... orderColumns) {
+		return queryComments(contentId, null, orderColumns);
 	}
 
 	@Override
