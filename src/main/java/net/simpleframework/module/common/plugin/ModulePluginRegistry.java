@@ -22,8 +22,8 @@ public abstract class ModulePluginRegistry<T extends IModulePlugin> extends Obje
 	private Map<Integer, Class<T>> registryCache;
 	private Vector<T> all;
 	{
-		registryCache = new ConcurrentHashMap<Integer, Class<T>>();
-		all = new Vector<T>();
+		registryCache = new ConcurrentHashMap<>();
+		all = new Vector<>();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public abstract class ModulePluginRegistry<T extends IModulePlugin> extends Obje
 			}
 			ObjectUtils.sort(all);
 		}
-		return new Vector<T>(all);
+		return new Vector<>(all);
 	}
 
 	public T getPlugin(final int mark) {

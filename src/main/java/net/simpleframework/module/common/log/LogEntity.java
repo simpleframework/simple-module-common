@@ -21,5 +21,5 @@ public abstract class LogEntity {
 		hCache.remove(bean);
 	}
 
-	private static final HashSet<Object> hCache = new HashSet<Object>();
+	private static final HashSet<Object> hCache = new HashSet<>();
 }

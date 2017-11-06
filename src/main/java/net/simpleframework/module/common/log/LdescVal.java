@@ -16,7 +16,7 @@ public abstract class LdescVal {
 
 	private static final ThreadLocal<Map<String, String>> DESCs;
 	static {
-		DESCs = new ThreadLocal<Map<String, String>>();
+		DESCs = new ThreadLocal<>();
 	}
 
 	public static String get(final Object bean) {
@@ -46,7 +46,7 @@ public abstract class LdescVal {
 			}
 		} else {
 			if (m == null) {
-				DESCs.set(m = new HashMap<String, String>());
+				DESCs.set(m = new HashMap<>());
 			}
 			m.put(key(bean), description);
 		}
