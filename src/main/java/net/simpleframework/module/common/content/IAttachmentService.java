@@ -88,4 +88,6 @@ public interface IAttachmentService<T extends Attachment> extends IDbBeanService
 	 * @return
 	 */
 	long getAttachsize(Object user);
+
+	IDataQuery<T> queryByUser(Object user, boolean distinct, String[] types);
 }

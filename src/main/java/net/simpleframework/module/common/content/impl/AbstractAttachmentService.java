@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import net.simpleframework.ado.FilterItems;
@@ -51,6 +53,33 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			return DataQueryUtils.nullQuery();
 		}
 		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)));
+	}
+
+	@Override
+	public IDataQuery<T> queryByUser(final Object user, final boolean distinct,
+			final String[] types) {
+		if (user == null) {
+			return DataQueryUtils.nullQuery();
+		}
+		final StringBuilder sql = new StringBuilder("userid=?");
+		final List<Object> params = new ArrayList<>();
+		params.add(getIdParam(user));
+		if (types != null && types.length > 0) {
+			sql.append(" and (");
+			int i = 0;
+			for (final String t : types) {
+				if (i++ > 0) {
+					sql.append(" or ");
+				}
+				sql.append("fileext=?");
+				params.add(t.toLowerCase());
+			}
+			sql.append(")");
+		}
+		if (distinct) {
+			sql.append(" group by md5");
+		}
+		return query(sql.append(" order by createdate desc"), params.toArray());
 	}
 
 	@Override
