@@ -77,9 +77,11 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			sql.append(")");
 		}
 		if (distinct) {
-			sql.append(" group by md5");
+			sql.append(" group by md5 order by max(createdate) desc");
+		} else {
+			sql.append(" order by createdate desc");
 		}
-		return query(sql.append(" order by createdate desc"), params.toArray());
+		return query(sql.toString(), params.toArray());
 	}
 
 	@Override
