@@ -16,6 +16,7 @@ import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.IParamsValue;
 import net.simpleframework.ado.db.IDbEntityManager;
 import net.simpleframework.ado.db.common.ExpressionValue;
+import net.simpleframework.ado.db.common.SQLValue;
 import net.simpleframework.ado.query.DataQueryUtils;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.BeanUtils;
@@ -55,6 +56,7 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		return queryByParams(FilterItems.of("contentId", getIdParam(contentId)));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IDataQuery<T> queryByUser(final Object user, final boolean distinct,
 			final String[] types) {
@@ -81,7 +83,14 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		} else {
 			sql.append(" order by createdate desc");
 		}
-		return query(sql.toString(), params.toArray());
+		if (isQueryNoCache()) {
+			// 不用缓存
+			return (IDataQuery<T>) getQueryManager()
+					.query(new SQLValue(new StringBuilder("select * from ").append(getTablename())
+							.append(" where ").append(sql), params.toArray()), getBeanClass());
+		} else {
+			return query(sql.toString(), params.toArray());
+		}
 	}
 
 	@Override
