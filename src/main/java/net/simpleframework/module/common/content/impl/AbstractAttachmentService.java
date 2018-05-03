@@ -127,7 +127,9 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 		}
 
 		for (final AttachmentFile af : attachments) {
+			long l0 = System.currentTimeMillis();
 			final String md5 = af.getMd5();
+			System.out.println("MD5: " + (System.currentTimeMillis() - l0));
 			final T attachment = createAttachmentFile(af);
 			attachment.setId(ID.of(af.getId()));
 			attachment.setContentId(contentId);
@@ -149,7 +151,9 @@ public abstract class AbstractAttachmentService<T extends Attachment>
 			getEntityManager().insert(attachment);
 
 			// lob
+			l0 = System.currentTimeMillis();
 			doInsertLob(attachment);
+			System.out.println("Upload Lob: " + (System.currentTimeMillis() - l0));
 		}
 	}
 
